@@ -9,6 +9,10 @@
         <a class="nav-link active" aria-current="page" href="/">Home</a>
         <a class="nav-link" href="/">Products</a>
         <a class="nav-link" href="#">Categories</a>
+        <% if user_signed_in? %>
+          <a class="nav-link" href="/products">Edit products</a>
+          <%= link_to "Sign out", destroy_user_session_url %>
+        <% end %>
       </div>
     </div>
     <div id="cart">
