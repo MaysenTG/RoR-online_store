@@ -6,3 +6,4 @@ import "controllers"
 //= require activestorage
 //= require jquery
 //= require jquery_ujs
+

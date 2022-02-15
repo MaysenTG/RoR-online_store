@@ -1,3 +1,5 @@
+
+
 <section class="h-100 h-custom" style="background-color: #d2c9ff;">
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
@@ -12,38 +14,42 @@
                     <h6 class="mb-0 text-muted"><%= current_order.order_items.size %> items</h6>
                   </div>
                   <hr class="my-4">
-                  <% @order_items.each do |item| %>
-                    <div class="row mb-4 d-flex justify-content-between align-items-center">
-                      <div class="col-md-2 col-lg-2 col-xl-2">
-                        <% if item.product.image.attached? %>
-                          <%= image_tag item.product.image, class: "img-fluid rounded-3" %>
-                        <% else %>
-                          <img
+                  <% if @order_items.size == 0 %>
+                    <h3 class="text-center">No items in cart</h3>
+                  <% else %>
+                    <% @order_items.each do |item| %>
+                      <div class="row mb-4 d-flex justify-content-between align-items-center">
+                        <div class="col-md-2 col-lg-2 col-xl-2">
+                          <% if item.product.image.attached? %>
+                            <%= image_tag item.product.image, class: "img-fluid rounded-3" %>
+                          <% else %>
+                            <img
                             src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img5.webp"
                             class="img-fluid rounded-3" alt="Cotton T-shirt">
-                          <% end %>
+                            <% end %>
+                          </div>
+                          <div class="col-md-3 col-lg-3 col-xl-3">
+                            <h6 class="text-muted"><%= item.product.title %></h6>
+                          </div>
+                          <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                            <%= form_for item, remote: true do |f| %>
+                              <%= f.hidden_field :product_id, :value => item.product.id %>
+                              <span class="d-flex"><%= f.number_field :quantity, :value => item.quantity.to_i, :min => 1, :style => "width: 3rem;" %>&nbsp;<%= f.submit "Update", :class => "btn btn-secondary" %></span>
+                            <% end %>
+                          </div>
+                          <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                            <h6 class="mb-0">$<%= item.total %></h6>
+                          </div>
+                          <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                            <%= button_to "X", order_item_path(item), method: :delete, remote: true, class: "btn btn-danger" %>
+                          </div>
                         </div>
-                        <div class="col-md-3 col-lg-3 col-xl-3">
-                          <h6 class="text-muted"><%= item.product.title %></h6>
-                        </div>
-                        <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                          <%= form_for item, remote: true do |f| %>
-                            <%= f.hidden_field :product_id, :value => item.product.id %>
-                            <span class="d-flex"><%= f.number_field :quantity, :value => item.quantity.to_i, :min => 1, :style => "width: 3rem;" %>&nbsp;<%= f.submit "Update", :class => "btn btn-secondary" %></span>
-                          <% end %>
-                        </div>
-                        <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                          <h6 class="mb-0">$<%= item.total %></h6>
-                        </div>
-                        <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                          <%= button_to "X", order_item_path(item), method: :delete, remote: true %>
-                        </div>
-                      </div>
-                      <hr class="my-4">
+                        <hr class="my-4">
+                      <% end %>
                     <% end %>
                     <div class="pt-5">
-                      <h6 class="mb-0"><a href="/" class="text-body"><em
-                          class="fas fa-long-arrow-alt-left me-2"></em>Back to shop</a></h6>
+                      <h4 class="mb-0 text-center"><a href="/" class="text-body"><em
+                          class="fas fa-long-arrow-alt-left me-2"></em>Back to shop</a></h4>
                     </div>
                   </div>
                 </div>
