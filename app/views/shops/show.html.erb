@@ -1,9 +1,32 @@
-<h1>Shops#show</h1>
-<p>Find me in app/views/shops/show.html.erb</p>
-
-
-<%= render @shop %>
-
+<div class="super_container">
+  <div class="single_product">
+    <div class="container-fluid" style=" background-color: #fff; padding: 11px;">
+      <div class="row">
+        <div class="col-lg-6 order-lg-2 order-1">
+          <div class="image_selected"><%= image_tag @shop.image, style: "width: 98%", class: "img-fluid rounded-3"%></div>
+        </div>
+        <div class="col-lg-6 order-3">
+          <div class="product_name">
+            <h3><%= @shop.title %></h3>
+          </div>
+          <div> <span class="product_price">
+              <h4><strong>$<%= @shop.price %></strong></h4>
+            </span></div>
+          <div class="product_description"><%= @shop.description %></div>
+          <hr class="singleline">
+          <div class="row">
+            <div class="col-xs-6">
+              <span class="d-flex">
+                <%= form_for(@shop) do |f| %>
+                  QTY: <%= f.number_field :quantity, :value => 1, :min => 1, :class => "form-control" %><br/><%= f.submit "Add to cart", :onclick => "this.value = 'Loading...'", :class => "btn btn-primary shop-button" %></span>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <div>
   <%= link_to "Back to products", root_path %>
 </div>

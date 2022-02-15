@@ -11,7 +11,7 @@
         <a class="nav-link" href="#">Categories</a>
         <% if user_signed_in? %>
           <a class="nav-link" href="/products">Edit products</a>
-          <%= link_to "Sign out", destroy_user_session_url %>
+          <%= button_to('Sign out', destroy_user_session_path, :method => :delete) %>
         <% end %>
       </div>
     </div>

@@ -1,8 +1,15 @@
-<%= form_with(model: product) do |form| %>
+<style>
+  @media (max-width: 600px) {
+    .row {
+      flex-direction: column;
+    }
+  }
+</style>
+
+<%= form_with(model: product, style: "width: 80%;") do |form| %>
   <% if product.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(product.errors.count, "error") %> prohibited this product from being saved:</h2>
-
       <ul>
         <% product.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -10,23 +17,36 @@
       </ul>
     </div>
   <% end %>
-
-  <div>
-    <%= form.label :title, style: "display: block" %>
-    <%= form.text_field :title %>
-  </div>
-
-  <div>
-    <%= form.label :description, style: "display: block" %>
-    <%= form.text_field :description %>
-  </div>
-
-  <div>
-    <%= form.label :price, style: "display: block" %>
-    <%= form.text_field :price %>
-  </div>
-
-  <div>
-    <%= form.submit %>
-  </div>
-<% end %>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <% if product.image.attached? %>
+          <label>Current image:</label>
+          <%= image_tag product.image, style: "width: 30rem", class: "img-fluid rounded-3" %>
+        <% end %>
+      </div>
+      <br/>
+      <div class="col">
+        <div class="mb-3">
+          <%= form.label :title, style: "display: block" %>
+          <%= form.text_field :title, class: "form-control" %>
+        </div>
+        <div class="mb-3">
+          <%= form.label :description, style: "display: block" %>
+          <%= form.text_field :description, class: "form-control" %>
+        </div>
+        <div class="mb-3">
+          <%= form.label :price, style: "display: block" %>
+          <%= form.text_field :price, class: "form-control" %>
+        </div>
+        <div class="mb-3">
+          <br/>
+          <%= form.label :image %>
+          <%= form.file_field :image, class: "form-control" %>
+        </div>
+      </div>
+    </div>
+    <div mb-3>
+      <%= form.submit %>
+    </div>
+  <% end %>
