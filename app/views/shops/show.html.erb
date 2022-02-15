@@ -3,7 +3,6 @@
     <div class="container-fluid" style=" background-color: #fff; padding: 11px;">
       <div class="row">
         <div class="col-lg-6 order-lg-2 order-1">
-<<<<<<< HEAD
           <div class="image_selected">
             <% if @shop.image.attached? %>
               <%= image_tag @shop.image, style: "width: 98%", class: "img-fluid rounded-3"%>
@@ -11,9 +10,6 @@
               <img src="" alt="">
             <% end %>
           </div>
-=======
-          <div class="image_selected"><%= image_tag @shop.image, style: "width: 98%", class: "img-fluid rounded-3"%></div>
->>>>>>> e9f48b3f534d0837a929832b5e4006e135a1aa26
         </div>
         <div class="col-lg-6 order-3">
           <div class="product_name">
@@ -27,15 +23,10 @@
           <div class="row">
             <div class="col-xs-6">
               <span class="d-flex">
-<<<<<<< HEAD
                 <%= form_for @order_item, remote: true do |f| %>
                   <%= f.hidden_field :product_id, :value => @shop.id %>
                   QTY: <%= f.number_field :quantity, :value => 1, :min => 1, :class => "form-control" %><br/>
                   <%= f.submit "Add to cart", :class => "btn btn-primary shop-button" %></span>
-=======
-                <%= form_for(@shop) do |f| %>
-                  QTY: <%= f.number_field :quantity, :value => 1, :min => 1, :class => "form-control" %><br/><%= f.submit "Add to cart", :onclick => "this.value = 'Loading...'", :class => "btn btn-primary shop-button" %></span>
->>>>>>> e9f48b3f534d0837a929832b5e4006e135a1aa26
               <% end %>
             </div>
           </div>
@@ -43,10 +34,7 @@
       </div>
     </div>
   </div>
-<<<<<<< HEAD
-=======
 </div>
 <div>
   <%= link_to "Back to products", root_path %>
->>>>>>> e9f48b3f534d0837a929832b5e4006e135a1aa26
 </div>

@@ -5,11 +5,6 @@
     }
   }
 </style>
-
-<<<<<<< HEAD
-
-=======
->>>>>>> e9f48b3f534d0837a929832b5e4006e135a1aa26
 <%= form_with(model: product, style: "width: 80%;") do |form| %>
   <% if product.errors.any? %>
     <div style="color: red">
@@ -27,12 +22,9 @@
         <% if product.image.attached? %>
           <label>Current image:</label>
           <%= image_tag product.image, style: "width: 30rem", class: "img-fluid rounded-3" %>
-<<<<<<< HEAD
         <% else %>
           <label>Currently selected image:</label>
           <img id="product-img-tag" src="#" class="img-fluid rounded-3" style="width: 30rem" alt="your image" />
-=======
->>>>>>> e9f48b3f534d0837a929832b5e4006e135a1aa26
         <% end %>
       </div>
       <br/>
@@ -52,11 +44,7 @@
         <div class="mb-3">
           <br/>
           <%= form.label :image %>
-<<<<<<< HEAD
           <%= form.file_field :image, class: "form-control", onchange: "readURL(this);" %>
-=======
-          <%= form.file_field :image, class: "form-control" %>
->>>>>>> e9f48b3f534d0837a929832b5e4006e135a1aa26
         </div>
       </div>
     </div>
@@ -64,22 +52,16 @@
       <%= form.submit %>
     </div>
   <% end %>
-<<<<<<< HEAD
+  <script>
+    function readURL(input) {
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
 
+        reader.onload = function (e) {
+          document.getElementById("product-img-tag").src=e.target.result;
+        };
 
-
-<script>
-function readURL(input) {
-  if (input.files && input.files[0]) {
-    var reader = new FileReader();
-
-    reader.onload = function (e) {
-      document.getElementById("product-img-tag").src=e.target.result;
-    };
-
-    reader.readAsDataURL(input.files[0]);
-  }
-}
-</script>
-=======
->>>>>>> e9f48b3f534d0837a929832b5e4006e135a1aa26
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+  </script>

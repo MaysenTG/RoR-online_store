@@ -1,36 +1,30 @@
 <p style="color: green"><%= notice %></p>
 <h1 class="text-center">Products</h1>
 <div class="container">
-  <div class="card-group">
-    <div class="row">
-      <% @products.each do |product| %>
-<<<<<<< HEAD
-        <div class="col-sm-8">
-=======
-        <div class="col-sm-4">
->>>>>>> e9f48b3f534d0837a929832b5e4006e135a1aa26
-          <div class="card">
-            <a id="anchor-img" href="<%= shop_url(product) %>">
-              <% if product.image.attached? %>
-                <%= image_tag product.image, class: "image-fluid card-img-top"%>
-              <% else %>
-                <img src="" class="card-img-top image-fluid" alt="...">
-              <% end %>
-              <div class="card-body">
-                <h5 class="card-title"><%= product.title %></h5>
-                <p class="card-text"><%= product.description %></p>
-                $<%= product.price %>
-              </div>
-            </a>
-            <div class="card-footer">
-              <%= form_for @order_item, remote: true do |f| %>
-                <%= f.hidden_field :product_id, :value => product.id %>
-                <span class="d-flex"><%= f.number_field :quantity, :value => 1, :min => 1, :class => "form-control" %><%= f.submit "Add to cart", :class => "btn btn-primary", :style => "width: 40%;" %></span>
-              <% end %>
+  <div class="row row-cols-2 row-cols-md-1 row-cols-md-3 g-2">
+    <% @products.each do |product| %>
+      <div class="col">
+        <div class="card">
+          <a id="anchor-img" href="<%= shop_url(product) %>">
+            <% if product.image.attached? %>
+              <%= image_tag product.image, style: "height: 10rem;", class: "image-fluid card-img-top"%>
+            <% else %>
+              <img src="" style="height: 15rem;" class="card-img-top image-fluid" alt="...">
+            <% end %>
+            <div class="card-body">
+              <h5 class="card-title"><%= product.title %></h5>
+              <p class="card-text"><%= product.description %></p>
+              $<%= product.price %>
             </div>
+          </a>
+          <div class="card-footer">
+            <%= form_for @order_item, remote: true do |f| %>
+              <%= f.hidden_field :product_id, :value => product.id %>
+              <span class="d-flex"><%= f.number_field :quantity, :value => 1, :min => 1, :class => "form-control" %><%= f.submit "Add to cart", :class => "btn btn-primary", :style => "width: 100%;" %></span>
+            <% end %>
           </div>
         </div>
-      <% end %>
-    </div>
+      </div>
+    <% end %>
   </div>
 </div>
