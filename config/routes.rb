@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   get 'carts/show'
   
   get 'carts' => 'carts#show'
+  
+  get 'users/sign_out/:id' => 'users#delete'
 
   resources :products
   resources :shops, only: [:index, :show]
