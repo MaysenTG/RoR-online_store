@@ -2,5 +2,7 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 
+//= require rails-ujs
+//= require activestorage
 //= require jquery
-//= require jquery-ujs
+//= require jquery_ujs

@@ -1,24 +1,32 @@
-
 <p style="color: green"><%= notice %></p>
-<h1>Products</h1>
+<h1 class="text-center">Products</h1>
 <div class="container">
   <div class="card-group">
-    <% @products.each do |product| %>
-      <div class="card">
-        <a id="anchor-img" href="<%= shop_url(product) %>">
-          <img src="" class="card-img-top image-fluid" height="100px" alt="...">
-          <div class="card-body">
-            <h5 class="card-title"><%= product.title %></h5>
-            <p class="card-text"><%= product.description %></p>
+    <div class="row">
+      <% @products.each do |product| %>
+        <div class="col-sm-8">
+          <div class="card">
+            <a id="anchor-img" href="<%= shop_url(product) %>">
+              <% if product.image.attached? %>
+                <%= image_tag product.image, class: "image-fluid card-img-top"%>
+              <% else %>
+                <img src="" class="card-img-top image-fluid" alt="...">
+              <% end %>
+              <div class="card-body">
+                <h5 class="card-title"><%= product.title %></h5>
+                <p class="card-text"><%= product.description %></p>
+                $<%= product.price %>
+              </div>
+            </a>
+            <div class="card-footer">
+              <%= form_for @order_item, remote: true do |f| %>
+                <%= f.hidden_field :product_id, :value => product.id %>
+                <span class="d-flex"><%= f.number_field :quantity, :value => 1, :min => 1, :class => "form-control" %><%= f.submit "Add to cart", :class => "btn btn-primary", :style => "width: 40%;" %></span>
+              <% end %>
+            </div>
           </div>
-        </a>
-        <div class="card-footer">
-          <%= form_for @order_item, remote: true do |f| %>
-            <%= f.hidden_field :product_id, :value => product.id %>
-            <span class="d-flex"><%= f.number_field :quantity, :value => 1, :min => 1, :class => "form-control" %><%= f.submit "Add to cart", :onclick => "this.value = 'Loading...'", :class => "btn btn-primary", :style => "width: 40%;" %></span>
-          <% end %>
         </div>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
   </div>
 </div>
