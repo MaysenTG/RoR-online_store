@@ -1,29 +1,29 @@
 <p style="color: green"><%= notice %></p>
 <h1 class="text-center">Edit products</h1>
-
-
-<table class="table">
-  <thead>
-    <th scope="col">Title</th>
-    <th scope="col">Description</th>
-    <th scope="col">Price</th>
-    <th scope="col">Actions</th>
-  </thead>
-  <tbody>
-    <% @products.each do |p| %>
-      <tr>
-        <td scope="row"><%= p.title %></td>
-        <td scope="row"><%= p.description %></td>
-        <td scope="row">
-          <%= p.price %>
-        </td>
-        <td scope="row">
-          <%= link_to "Edit", edit_product_path(p) %>
-          <%= link_to "Show", product_path(p) %>
-          <%= button_to "Delete", product_path(p), method: :delete, class: "btn btn-danger", style: "float: right;", data: {confirm: "Are you sure?"} %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-<%= link_to "New product", new_product_path %>
+<div class="container">
+  <table class="table">
+    <thead>
+      <th scope="col">Title</th>
+      <th scope="col">Description</th>
+      <th scope="col">Price</th>
+      <th scope="col">Actions</th>
+    </thead>
+    <tbody>
+      <% @products.each do |p| %>
+        <tr>
+          <td scope="row"><%= p.title %></td>
+          <td scope="row"><%= p.description %></td>
+          <td scope="row">
+            <%= p.price %>
+          </td>
+          <td scope="row">
+            <%= link_to "Edit", edit_product_path(p) %>
+            <%= link_to "Show", product_path(p) %>
+            <%= button_to "Delete", product_path(p), method: :delete, class: "btn btn-danger", style: "float: right;", data: {confirm: "Are you sure?"} %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= link_to "New product", new_product_path %>
+</div>

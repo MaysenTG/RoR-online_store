@@ -10,6 +10,7 @@
               <div class="col-lg-8">
                 <div class="p-5">
                   <div class="d-flex justify-content-between align-items-center mb-5">
+                  <a href="/"><i style="font-size: 3rem;" class="bi bi-arrow-left-square"></i></a>
                     <h1 class="fw-bold mb-0 text-black">Shopping Cart</h1>
                     <h6 class="mb-0 text-muted"><%= current_order.order_items.size %> items</h6>
                   </div>
@@ -48,8 +49,7 @@
                       <% end %>
                     <% end %>
                     <div class="pt-5">
-                      <h4 class="mb-0 text-center"><a href="/" class="text-body"><em
-                          class="fas fa-long-arrow-alt-left me-2"></em>Back to shop</a></h4>
+                      <h4 class="mb-0 text-center"><a href="/" class="text-body">Back to shop</a></h4>
                     </div>
                   </div>
                 </div>
