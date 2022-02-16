@@ -6,7 +6,7 @@
       <div class="col">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title"><%= category.category %></h5>
+            <h5 class="card-title"><%= category.category %> (<%= category.products.size %>)</h5>
             <h6><%= link_to "Show products", shops_category_path(category) %></h6>
           </div>
         </div>

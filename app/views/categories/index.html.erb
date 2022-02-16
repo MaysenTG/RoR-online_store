@@ -15,7 +15,7 @@
         <tr>
           <td scope="row"><%= c.category %></td>
           <td scope="row"><%= c.products.size %></td>
-          <td scope="row" rowspan="3">
+          <td scope="row">
             <%= link_to "Edit", edit_category_path(c) %>
             <%= link_to "Show", category_path(c) %>
             <%= button_to "Delete", category_path(c), method: :delete, class: "btn btn-danger", style: "float: right;", data: {confirm: "Are you sure?"} %>
