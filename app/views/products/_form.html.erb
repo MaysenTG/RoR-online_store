@@ -46,6 +46,9 @@
           <%= form.label :image %>
           <%= form.file_field :image, class: "form-control", onchange: "readURL(this);" %>
         </div>
+        <div class="mb-3">
+          <%= form.select :category_id, Category.all.map {|c| [c.category, c.id]} %>
+        </div>
       </div>
     </div>
     <div mb-3>

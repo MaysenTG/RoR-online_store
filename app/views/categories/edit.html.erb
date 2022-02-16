@@ -1,0 +1,10 @@
+<h1 class="text-center">Editing category</h1>
+
+<%= render "form", category: @category %>
+
+<br>
+
+<div class="d-flex justify-content-center">
+  <%= link_to "Show this category", @category, class: "btn btn-secondary" %> &nbsp;
+  <%= link_to "Back to categories", categories_path, class: "btn btn-secondary" %>
+</div>
