@@ -7,7 +7,7 @@
         <div class="card">
           <a id="anchor-img" href="<%= shop_url(product) %>">
             <% if product.image.attached? %>
-              <%= image_tag product.image, style: "height: 10rem;", class: "image-fluid card-img-top"%>
+              <%= image_tag product.image, style: "max-height: 15rem", class: "image-fluid card-img-top"%>
             <% else %>
               <img src="" style="height: 15rem;" class="card-img-top image-fluid" alt="...">
             <% end %>

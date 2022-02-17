@@ -1,1 +1,29 @@
-<h1>Home</h1>
+<div class="container">
+  <div class="card bg-dark text-black">
+    <img height="500" style="overflow: none;" src="https://images.unsplash.com/photo-1513106021000-168e5f56609d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" class="card-img" alt="...">
+    <div class="card-img-overlay">
+      <div style="margin: 10rem auto; width: 50%; background-color: white; box-shadow: 2px 2px 2px 2px #888888;">
+        <h5 class="card-title text-center">The best store</h5>
+        <p class="card-text text-center">Lorem ipsum</p>
+        <p class="card-text" style="width: 50%; margin: auto;"><%= button_to "Shop now", shops_path, class: "btn btn-primary" %></p>
+      </div>
+    </div>
+  </div>
+  &nbsp;
+  <div class="card-group">
+    <div class="card">
+      <%= link_to(shops_path) do %><img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" class="img-fluid card-img-top" alt="..."><% end %>
+      <div class="card-body">
+        <h5 class="card-title"><%= link_to "Products", shops_path %></h5>
+        <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+      </div>
+    </div>
+    <div class="card">
+      <%= link_to(shops_categories_path) do %><img src="https://images.unsplash.com/photo-1635352723068-ffb3b922397f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" class=" img-fluid card-img-top" alt="..."><% end %>
+      <div class="card-body">
+        <h5 class="card-title"><%= link_to "Categories", shops_categories_path %></h5>
+        <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+      </div>
+    </div>
+  </div>
+</div>
