@@ -5,79 +5,82 @@
     }
   }
 </style>
-<div id="save-modal" style="height: 5.5rem; background-color: #2e302e; color: white; display: none;">
-  <h4 class="float-start" style="margin-left: 5rem; margin-top: 1.25rem;">Unsaved changes</h4>
-  <span class="float-end">
-    <a href="/products" style="margin-top: 1.25rem; margin-right: 5rem;"class="btn btn-secondary btn-lg">Discard</a>
-    <input type="submit" form="productForm" style="margin-top: 1.25rem; margin-right: 5rem;" class="btn btn-primary btn-lg" value="Save" />
-  </span>
+<div class="container">
+  <div class="alert alert-dark" id="save-modal" style="height: 80px; display: none;" role="alert">
+    Unsaved changes
+    <div class="float-end d-flex justify-content-end">
+      <a href="/products" class="btn btn-secondary align-self-center">Discard</a>&nbsp;
+      <input type="submit" form="productForm" class="btn btn-primary align-self-center" value="Save" />
+    </div>
+  </div>
+  <%= form_with(model: product, style: "width: 80%;", id: 'productForm') do |form| %>
+    <% if product.errors.any? %>
+      <div style="color: red">
+        <h2><%= pluralize(product.errors.count, "error") %> prohibited this product from being saved:</h2>
+        <ul>
+          <% product.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <h2 class="text-center"><%= formType %> product</h2>
+    <br/>
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <% if product.image.attached? %>
+            <label>Current image:</label>
+            <%= image_tag product.image, style: "width: 30rem", class: "img-fluid rounded-3" %>
+          <% else %>
+            <label>Currently selected image:</label>
+            <img id="product-img-tag" src="#" class="img-fluid rounded-3" style="width: 30rem" alt="your image" />
+          <% end %>
+        </div>
+        <br/>
+        <div class="col">
+          <div class="mb-3">
+            <%= form.label :title, style: "display: block" %>
+            <%= form.text_field :title, class: "form-control", onchange: "showSave();" %>
+          </div>
+          <div class="mb-3">
+            <%= form.label :description, style: "display: block" %>
+            <%= form.text_field :description, class: "form-control", onchange: "showSave();" %>
+          </div>
+          <div class="mb-3">
+            <%= form.label :price, style: "display: block" %>
+            <%= form.text_field :price, class: "form-control", onchange: "showSave();" %>
+          </div>
+          <div class="mb-3">
+            <br/>
+            <%= form.label :image %>
+            <%= form.file_field :image, class: "form-control", onchange: "readURL(this);" %>
+          </div>
+          <div class="mb-3">
+            <label>Category: </label>
+            <%= form.select :category_id, Category.all.map {|c| [c.category, c.id]}, :prompt=>"Select category", onchange: "showSave();" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>
-<%= form_with(model: product, style: "width: 80%;", id: 'productForm') do |form| %>
-  <% if product.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(product.errors.count, "error") %> prohibited this product from being saved:</h2>
-      <ul>
-        <% product.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-  <h2 class="text-center"><%= formType %> product</h2>
-  <br/>
-  <div class="container">
-    <div class="row">
-      <div class="col">
-        <% if product.image.attached? %>
-          <label>Current image:</label>
-          <%= image_tag product.image, style: "width: 30rem", class: "img-fluid rounded-3" %>
-        <% else %>
-          <label>Currently selected image:</label>
-          <img id="product-img-tag" src="#" class="img-fluid rounded-3" style="width: 30rem" alt="your image" />
-        <% end %>
-      </div>
-      <br/>
-      <div class="col">
-        <div class="mb-3">
-          <%= form.label :title, style: "display: block" %>
-          <%= form.text_field :title, class: "form-control", onchange: "showSave();" %>
-        </div>
-        <div class="mb-3">
-          <%= form.label :description, style: "display: block" %>
-          <%= form.text_field :description, class: "form-control", onchange: "showSave();" %>
-        </div>
-        <div class="mb-3">
-          <%= form.label :price, style: "display: block" %>
-          <%= form.text_field :price, class: "form-control", onchange: "showSave();" %>
-        </div>
-        <div class="mb-3">
-          <br/>
-          <%= form.label :image %>
-          <%= form.file_field :image, class: "form-control", onchange: "readURL(this);" %>
-        </div>
-        <div class="mb-3">
-          <label>Category: </label>
-          <%= form.select :category_id, Category.all.map {|c| [c.category, c.id]}, :prompt=>"Select category", onchange: "showSave();" %>
-        </div>
-      </div>
-    </div>
-  <% end %>
-  <script>
-    function readURL(input) {
-      showSave();
+<script>
+  function readURL(input) {
+    showSave();
 
-      if (input.files && input.files[0]) {
-        var reader = new FileReader();
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
 
-        reader.onload = function (e) {
-          document.getElementById("product-img-tag").src=e.target.result;
-        };
+      reader.onload = function (e) {
+        document.getElementById("product-img-tag").src=e.target.result;
+      };
 
-        reader.readAsDataURL(input.files[0]);
-      }
+      reader.readAsDataURL(input.files[0]);
     }
+  }
 
-    function showSave() {
-      document.getElementById("save-modal").style.display = "block";
-    }
-  </script>
+  function showSave() {
+    document.getElementById("save-modal").style.display = "block";
+  }
+</script>

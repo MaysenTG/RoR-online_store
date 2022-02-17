@@ -1,5 +1,14 @@
 <div class="container">
-  <%= form_with(model: category) do |form| %>
+  <div class="alert alert-dark" id="save-modal" style="height: 80px; display: none;" role="alert">
+    Unsaved changes
+    <div class="float-end d-flex justify-content-end">
+      <a href="/categories" class="btn btn-secondary align-self-center">Discard</a>&nbsp;
+      <input type="submit" form="catForm" class="btn btn-primary align-self-center" value="Save" />
+    </div>
+  </div>
+  
+  
+  <%= form_with(model: category, id: "catForm") do |form| %>
     <% if category.errors.any? %>
       <div style="color: red">
         <h2><%= pluralize(category.errors.count, "error") %> prohibited this category from being saved:</h2>
@@ -10,12 +19,15 @@
         </ul>
       </div>
     <% end %>
+    <h1 class="text-center"><%= formType %> category</h1>
     <div class="mb-3">
       <%= form.label :category, style: "display: block" %>
-      <%= form.text_field :category, class: "form-control" %>
-    </div>
-    <div class="mb-3">
-      <%= form.submit %>
+      <%= form.text_field :category, class: "form-control", onchange: "showSave();" %>
     </div>
   <% end %>
 </div>
+<script>
+  function showSave() {
+      document.getElementById("save-modal").style.display = "block";
+    }
+</script>
