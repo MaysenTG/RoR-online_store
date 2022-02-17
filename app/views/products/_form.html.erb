@@ -5,7 +5,14 @@
     }
   }
 </style>
-<%= form_with(model: product, style: "width: 80%;") do |form| %>
+<div id="save-modal" style="height: 5.5rem; background-color: #2e302e; color: white; display: none;">
+  <h4 class="float-start" style="margin-left: 5rem; margin-top: 1.25rem;">Unsaved changes</h4>
+  <span class="float-end">
+    <a href="/products" style="margin-top: 1.25rem; margin-right: 5rem;"class="btn btn-secondary btn-lg">Discard</a>
+    <input type="submit" form="productForm" style="margin-top: 1.25rem; margin-right: 5rem;" class="btn btn-primary btn-lg" value="Save" />
+  </span>
+</div>
+<%= form_with(model: product, style: "width: 80%;", id: 'productForm') do |form| %>
   <% if product.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(product.errors.count, "error") %> prohibited this product from being saved:</h2>
@@ -16,6 +23,8 @@
       </ul>
     </div>
   <% end %>
+  <h2 class="text-center"><%= formType %> product</h2>
+  <br/>
   <div class="container">
     <div class="row">
       <div class="col">
@@ -31,15 +40,15 @@
       <div class="col">
         <div class="mb-3">
           <%= form.label :title, style: "display: block" %>
-          <%= form.text_field :title, class: "form-control" %>
+          <%= form.text_field :title, class: "form-control", onchange: "showSave();" %>
         </div>
         <div class="mb-3">
           <%= form.label :description, style: "display: block" %>
-          <%= form.text_field :description, class: "form-control" %>
+          <%= form.text_field :description, class: "form-control", onchange: "showSave();" %>
         </div>
         <div class="mb-3">
           <%= form.label :price, style: "display: block" %>
-          <%= form.text_field :price, class: "form-control" %>
+          <%= form.text_field :price, class: "form-control", onchange: "showSave();" %>
         </div>
         <div class="mb-3">
           <br/>
@@ -47,16 +56,16 @@
           <%= form.file_field :image, class: "form-control", onchange: "readURL(this);" %>
         </div>
         <div class="mb-3">
-          <%= form.select :category_id, Category.all.map {|c| [c.category, c.id]}, :prompt=>"Select category" %>
+          <label>Category: </label>
+          <%= form.select :category_id, Category.all.map {|c| [c.category, c.id]}, :prompt=>"Select category", onchange: "showSave();" %>
         </div>
       </div>
-    </div>
-    <div mb-3>
-      <%= form.submit %>
     </div>
   <% end %>
   <script>
     function readURL(input) {
+      showSave();
+
       if (input.files && input.files[0]) {
         var reader = new FileReader();
 
@@ -66,5 +75,9 @@
 
         reader.readAsDataURL(input.files[0]);
       }
+    }
+
+    function showSave() {
+      document.getElementById("save-modal").style.display = "block";
     }
   </script>
