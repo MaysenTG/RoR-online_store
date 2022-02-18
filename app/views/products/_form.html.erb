@@ -1,17 +1,24 @@
 <style>
+  #form-title {
+    font-size: 2rem;
+  }
   @media (max-width: 600px) {
     .row {
       flex-direction: column;
+    }
+    #form-title {
+      font-size: 1.5rem;
     }
   }
 </style>
 <div class="container">
   <div class="alert alert-dark" id="save-modal" style="height: 80px; display: none;" role="alert">
-    Unsaved changes
+    <span id="form-title"><% if formType == "Edit" %>Unsaved changes<% else %>Creating new product<% end %>
     <div class="float-end d-flex justify-content-end">
       <a href="/products" class="btn btn-secondary align-self-center">Discard</a>&nbsp;
-      <input type="submit" form="productForm" class="btn btn-primary align-self-center" value="Save" />
+      <input type="submit" form="productForm" class="btn btn-primary align-self-center" value="<% if formType == "Edit" %>Save<% else %>Create<% end %>" />
     </div>
+    </span>
   </div>
   <%= form_with(model: product, style: "width: 80%;", id: 'productForm') do |form| %>
     <% if product.errors.any? %>
@@ -41,20 +48,20 @@
         <div class="col">
           <div class="mb-3">
             <%= form.label :title, style: "display: block" %>
-            <%= form.text_field :title, class: "form-control", onchange: "showSave();" %>
+            <%= form.text_field :title, class: "form-control", onkeydown: "showSave();" %>
           </div>
           <div class="mb-3">
             <%= form.label :description, style: "display: block" %>
-            <%= form.text_field :description, class: "form-control", onchange: "showSave();" %>
+            <%= form.text_field :description, class: "form-control", onkeydown: "showSave();" %>
           </div>
           <div class="mb-3">
             <%= form.label :price, style: "display: block" %>
-            <%= form.text_field :price, class: "form-control", onchange: "showSave();" %>
+            <%= form.text_field :price, class: "form-control", onkeydown: "showSave();" %>
           </div>
           <div class="mb-3">
             <br/>
             <%= form.label :image %>
-            <%= form.file_field :image, class: "form-control", onchange: "readURL(this);" %>
+            <%= form.file_field :image, class: "form-control", onkeydown: "readURL(this);" %>
           </div>
           <div class="mb-3">
             <label>Category: </label>
