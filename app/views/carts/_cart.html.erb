@@ -1,1 +1,4 @@
-<%= link_to "Cart(#{current_order.order_items.size}): #{current_order.subtotal}$", carts_show_path %>
+<%= link_to(carts_show_path, class: "btn btn-outline-dark") do %>
+    <i class="bi-cart-fill me-1"></i>Cart
+    <span class="badge bg-dark text-white ms-1 rounded-pill"><%= current_order.order_items.size %></span>
+<% end %>

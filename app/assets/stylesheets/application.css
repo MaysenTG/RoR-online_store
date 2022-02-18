@@ -13,3 +13,23 @@
  *= require_tree .
  *= require_self
  */
+ 
+ footer {
+     font-size: 1rem;
+ }
+ 
+ 
+ .table td, th {
+     font-size: 1rem;
+ }
+
+
+  #form-title {
+    font-size: 2rem;
+  }
+  @media (max-width: 600px) {
+    #form-title {
+      font-size: 1.5rem;
+    }
+  }
+ 
