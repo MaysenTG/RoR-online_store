@@ -70,5 +70,6 @@ Rails.application.configure do
   
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
   
-  config.hosts = "4054fb27f05a4c47a32ed83ca440ab58.vfs.cloud9.us-east-1.amazonaws.com"
+  config.hosts = "4054fb27f05a4c47a32ed83ca440ab58.vfs.cloud9.us-east-1.amazonaws.com" # Amazon Cloud9 Dev
+  config.hosts = "localhost" # Local Dev
 end
