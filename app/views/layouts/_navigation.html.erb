@@ -5,14 +5,16 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
+      <div class="navbar-nav align-items-start">
         <a class="nav-link" href="/">Home</a>
         <a class="nav-link" href="/shops">Products</a>
         <a class="nav-link" href="/shops_categories">Categories</a>
         <% if user_signed_in? %>
-          <a class="nav-link" href="/categories">Edit categories</a>
-          <a class="nav-link" href="/products">Edit products</a>
-          <%= button_to('Sign out', destroy_user_session_path, :method => :delete) %>
+          <div class="navbar-nav">
+            <a class="nav-link" href="/categories">Edit categories</a>
+            <a class="nav-link" href="/products">Edit products</a>
+          </div>
+        <%= button_to 'Sign out', destroy_user_session_path, :method => :delete, :class => "btn btn-secondary" %>
         <% end %>
       </div>
     </div>
