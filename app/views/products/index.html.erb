@@ -1,8 +1,9 @@
 <h3 class="text-center" style="color: green"><%= notice %></h3>
 <h1 class="text-center">Edit products (total: <%= @products.size %>)</h1>
-
 <div class="container">
-  <table class="table">
+  <input type="text" class="form-control" id="search-input" onkeyup="searchProducts()" placeholder="Search for products.." style="width: 100%;">
+  <br/>
+  <table class="table" id="product-table">
     <thead>
       <th scope="col">Title</th>
       <th scope="col">Description</th>
@@ -26,3 +27,26 @@
   </table>
   <%= button_to "New product", new_product_path, class: "btn btn-primary btn-lg" %>
 </div>
+<script>
+  function searchProducts() {
+    // Declare variables
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("search-input");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("product-table");
+    tr = table.getElementsByTagName("tr");
+
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[0];
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
+  }
+</script>
