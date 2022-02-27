@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get 'carts/show'
   
   get 'carts' => 'carts#show'
+  
 
   resources :shops_categories
   resources :products

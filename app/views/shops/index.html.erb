@@ -1,37 +1,57 @@
+<% num_products = @products.size %>
+<% max_products_per_row = 4 %>
 <p style="color: green"><%= notice %></p>
-<h1 class="text-center">Products</h1>
+<span style="width: 40vw; margin: 0 auto;" class="d-flex justify-content-center">
+  <h1 class="text-center">Products</h1>
+  &nbsp; <input type="text" class="form-control" id="search-input-cards" onkeyup="searchProductsCards()" placeholder="Search for products.."></span>
+<br/>
 <div class="container">
-  <div class="row row-cols-2 row-cols-md-1 row-cols-md-3 g-2">
+  <div class="row row-cols-2 row-cols-md-<% if num_products < 4 %><%= num_products %><% else %><%= max_products_per_row %><% end %> row-cols-lg-<% if num_products < 4 %><%= num_products %><% else %><%= max_products_per_row %><% end %>" id="cards-container">
     <% @products.each do |product| %>
-      <div class="col">
-        <div class="card">
-          <a id="anchor-img" href="<%= shop_url(product) %>">
-            <% if product.image.attached? %>
-              <%= image_tag product.image, style: "max-height: 15rem", class: "image-fluid card-img-top"%>
-            <% else %>
-              <img src="" style="height: 15rem;" class="card-img-top image-fluid" alt="...">
-            <% end %>
-            <div class="card-body">
-              <h5 class="card-title"><%= product.title %></h5>
-              <p class="card-text"><%= product.description %></p>
-              $<%= product.price %>
-            </div>
-          </a>
-          <div class="card-footer">
-            <%= form_for @order_item, remote: true do |f| %>
-              <%= f.hidden_field :product_id, :value => product.id %>
-              <span class="d-flex"><%= f.number_field :quantity, :value => 1, :min => 1, :class => "form-control" %><%= f.submit "Add to cart", :id => "add-to-cart-btn", :class => "btn btn-primary", :style => "width: 100%;" %></span>
-            <% end %>
+      <div class="card" style="height: 100%;">
+        <a id="anchor-img" href="<%= shop_url(product) %>">
+          <% if product.image.attached? %>
+            <%= image_tag product.image, style: "max-height: 15rem", class: "image-fluid card-img-top"%>
+          <% else %>
+            <img src="https://dummyimage.com/100/fff/0011ff.png&text=Image+Not+Found" style="height: 15rem;" class="card-img-top image-fluid" alt="...">
+          <% end %>
+          <div class="card-body">
+            <h5 class="card-title"><%= product.title %></h5>
+            <p class="card-text"><%= product.description %></p>
+            $<%= product.price %>
           </div>
+        </a>
+        <div class="card-footer">
+          <%= form_for @order_item, remote: true do |f| %>
+            <%= f.hidden_field :product_id, :value => product.id %>
+            <span class="d-flex"><%= f.number_field :quantity, :value => 1, :min => 1, :class => "form-control" %><%= f.submit "Add to cart", :id => "add-to-cart-btn", :class => "btn btn-primary", :style => "width: 100%;" %></span>
+          <% end %>
         </div>
       </div>
     <% end %>
   </div>
 </div>
-
-
 <script>
- $("#add-to-cart-btn").click(function(e){
-   $('#cart').html("<%= escape_javascript(render('carts/cart')) %>");
- });
+  function searchProductsCards() {
+     // Declare variables
+     var input, filter, table, tr, td, i, txtValue;
+     input = document.getElementById("search-input-cards");
+     filter = input.value.toUpperCase();
+     cards = document.getElementById("cards-container");
+     cardDiv = cards.getElementsByClassName("card");
+
+     // Loop through all table rows, and hide those who don't match the search query
+     for (i = 0; i < cardDiv.length; i++) {
+       td = cardDiv[i].getElementsByTagName("h5")[0];
+       console.log(td);
+       if (td) {
+         txtValue = td.textContent || td.innerText;
+         if (txtValue.toUpperCase().indexOf(filter) > -1) {
+           cardDiv[i].style.display = "";
+         } else {
+           cardDiv[i].style.display = "none";
+         }
+       }
+     }
+   }
 </script>
