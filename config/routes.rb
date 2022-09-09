@@ -3,6 +3,11 @@ Rails.application.routes.draw do
   get 'carts/show'
   
   get 'carts' => 'carts#show'
+  get 'cart' => 'carts#get_cart'
+  post '/cart/add' => 'carts#add_item'
+  delete '/cart/delete' => 'carts#remove_item'
+  put '/cart/update' => 'carts#update_quantity'
+  
   
 
   resources :shops_categories

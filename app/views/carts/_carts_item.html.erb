@@ -10,79 +10,80 @@
                   <div class="d-flex justify-content-between align-items-center mb-5">
                     <a href="/"><i style="font-size: 3rem;" class="bi bi-arrow-left-square"></i></a>
                     <h1 class="fw-bold mb-0 text-black">Shopping Cart</h1>
-                    <h6 class="mb-0 text-muted"><%= current_order.order_items.size %> items</h6>
+                    <h6 class="mb-0 text-muted"><span id="num-items-in-cart"><%= total_items_in_cart %></span> items</h6>
                   </div>
                   <hr class="my-4">
-                  <% if @order_items.size == 0 %>
-                    <h3 class="text-center">No items in cart</h3>
-                  <% else %>
-                    <% @order_items.each do |item| %>
-                      <div class="row mb-4 d-flex justify-content-between align-items-center">
-                        <div class="col-md-2 col-lg-2 col-xl-2">
-                          <% if item.product.image.attached? %>
-                            <%= image_tag item.product.image, class: "img-fluid rounded-3" %>
-                          <% else %>
-                            <img
-                            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img5.webp"
-                            class="img-fluid rounded-3" alt="Cotton T-shirt">
-                            <% end %>
-                          </div>
-                          <div class="col-md-3 col-lg-3 col-xl-3">
-                            <h6 class="text-muted"><%= item.product.title %></h6>
-                          </div>
-                          <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                            <%= form_for item, remote: true do |f| %>
-                              <%= f.hidden_field :product_id, :value => item.product.id %>
-                              <span class="d-flex"><%= f.number_field :quantity, :value => item.quantity.to_i, :min => 1, :style => "width: 3rem;" %>&nbsp;<%= f.submit "Update", :class => "btn btn-secondary" %></span>
-                            <% end %>
-                          </div>
-                          <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                            <h6 class="mb-0">$<%= item.total %></h6>
-                          </div>
-                          <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                            <%= button_to "X", order_item_path(item), method: :delete, remote: true, class: "btn btn-danger" %>
-                          </div>
-                        </div>
-                        <hr class="my-4">
-                      <% end %>
-                    <% end %>
-                    <div class="pt-5">
-                      <h4 class="mb-0 text-center"><a href="/" class="text-body">Back to shop</a></h4>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-4 bg-grey">
-                  <div class="p-5">
-                    <h3 class="fw-bold mb-5 mt-2 pt-1">Summary</h3>
-                    <hr class="my-4">
-                    <div class="d-flex justify-content-between mb-4">
-                      <h5 class="text-uppercase">Total items: <%= current_order.order_items.size %></h5>
-                      <h5>$<%= current_order.subtotal %></h5>
-                    </div>
-                    <h5 class="text-uppercase mb-3">Shipping</h5>
-                    <div class="mb-4 pb-2">
-                      <select class="select">
-                        <option value="5">Standard-Delivery- $5.00</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                        <option value="4">Four</option>
-                      </select>
-                    </div>
-                    <h5 class="text-uppercase mb-3">Discount code</h5>
-                    <div class="mb-5">
-                      <div class="form-outline">
-                        <input type="text" id="form3Examplea2" class="form-control form-control-lg" />
-                        <label class="form-label" for="form3Examplea2">Enter your code</label>
+                  <% @cart_items.each do |item| %>
+                    <div class="row mb-4 d-flex justify-content-between align-items-center">
+                      <div class="col-md-2 col-lg-2 col-xl-2">
+                        <img class="img-fluid rounded-3" src="https://rails-online-store.herokuapp.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBCdz09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--e6347174c97b622a47e4b33eaa85ba7df4a091c5/french-rustic-solid-oak-18m-dining-table-328952_700x.jpeg">
+                      </div>
+                      <div class="col-md-3 col-lg-3 col-xl-3">
+                        <h6 class="text-muted"><%= item["title"] %></h6>
+                      </div>
+                      <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                        <span hidden data-individual-price-per-product="<%= item["id"] %>"><%= item["price"] %></span>
+                        <form id="update-product-cart-form" method="post">
+                          <input type="hidden" value="<%= item["id"] %>" name="product_id">
+                          <span class="d-flex">
+                            <input style="width: 5rem;" value="<%= item["quantity"] %>" min="1" class="form-control" type="number" name="quantity" id="product_quantity">
+                            &nbsp;
+                            <button type="button" class="update-product-cart-button btn btn-secondary">Update</button>
+                          </span>
+                        </form>
+                      </div>
+                      <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                        <h6 data-total-price-product="<%= item["id"] %>" class="mb-0">$<%= (item["quantity"].to_i * item["price"].to_i) %></h6>
+                      </div>
+                      <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                        <form id="delete-product-cart-form" method="delete">
+                          <input type="hidden" value="<%= item["id"] %>" name="product_id">
+                          <input value="<%= item["quantity"] %>" min="1" class="form-control" type="hidden" name="quantity" id="product_quantity">
+                          <span class="d-flex">
+                            <button type="button" class="remove-product-from-cart btn btn-danger">X</button>
+                          </span>
+                        </form>
                       </div>
                     </div>
                     <hr class="my-4">
-                    <div class="d-flex justify-content-between mb-5">
-                      <h5 class="text-uppercase">Total price</h5>
-                      <h5>$<%= current_order.subtotal %></h5>
-                    </div>
-                    <button type="button" class="btn btn-dark btn-block btn-lg"
-                    data-mdb-ripple-color="dark">Checkout</button>
+                  <% end %>
+                  <div class="pt-5">
+                    <h4 class="mb-0 text-center"><a href="/" class="text-body">Back to shop</a></h4>
                   </div>
+                </div>
+              </div>
+              <div class="col-lg-4 bg-grey">
+                <div class="p-5">
+                  <h3 class="fw-bold mb-5 mt-2 pt-1">Summary</h3>
+                  <hr class="my-4">
+                  <div class="d-flex justify-content-between mb-4">
+                    <h5 class="text-uppercase">Total items: <span id="total-num-items"><%= total_items_in_cart %></span></h5>
+                    <h5 id="sub-total-of-items">$<%= sub_total_in_cart %></h5>
+                  </div>
+                  <h5 class="text-uppercase mb-3">Shipping</h5>
+                  <div class="mb-4 pb-2">
+                    <select id="shipping-select" class="select">
+                      <option value="0" selected>Select shipping</option>
+                      <option value="5">Standard-Delivery - $5</option>
+                      <option value="15">Express - $15</option>
+                    </select>
+                  </div>
+                  <h5 class="text-uppercase mb-3">Discount code</h5>
+                  <div class="mb-5">
+                    <div class="form-outline">
+                      <div class="d-flex">
+                        <input type="text" id="form3Examplea2" class="form-control form-control-lg">
+                        <button class="btn btn-secondary w-100">Apply</button>
+                      </div>
+                      <label class="form-label" for="form3Examplea2">Enter your code</label>
+                    </div>
+                  </div>
+                  <hr class="my-4">
+                  <div class="d-flex justify-content-between mb-5">
+                    <h5 class="text-uppercase">Total price</h5>
+                    <h5><span id="total-price-before-shipping">$<%= sub_total_in_cart %></span></h5>
+                  </div>
+                  <button type="button" <% if total_items_in_cart == 0 %>disabled<% end %> class="w-100 btn btn-dark btn-block btn-lg" data-mdb-ripple-color="dark">Checkout</button>
                 </div>
               </div>
             </div>
@@ -92,3 +93,90 @@
     </div>
   </div>
 </section>
+<script>
+  document.getElementById("shipping-select").addEventListener("change", async function(e) {
+    const cart_response = await fetch('/cart')
+    let cart_data = await cart_response.json()
+    document.getElementById("total-price-before-shipping").innerText = "$"+(parseInt(cart_data["info"]["subtotal"]) + parseInt(e.target.value));
+  });
+
+  document.querySelectorAll(".update-product-cart-button").forEach(btn => {
+      btn.addEventListener("click", async function(e) {
+        //btn.disabled = true;
+        //btn.nextElementSibling.removeAttribute("hidden");
+        //btn.setAttribute("hidden", "true");
+
+        e.preventDefault();
+
+        let formProductInfo = {
+          product_id: e.target.parentElement.parentElement.product_id.value,
+          quantity: e.target.parentElement.parentElement.quantity.value
+        }
+
+        const response = await fetch('/cart/update', {
+          method: 'PUT',
+          body: JSON.stringify(formProductInfo),
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          }
+        })
+
+        let data = await response.json();
+
+        let new_total = parseInt(document.querySelector("[data-individual-price-per-product='"+e.target.parentElement.parentElement.product_id.value+"']").innerText) * e.target.parentElement.parentElement.quantity.value
+
+        document.querySelector("[data-total-price-product='"+e.target.parentElement.parentElement.product_id.value+"']").innerText = "$"+new_total
+
+        //#cart-items-count
+        const cart_response = await fetch('/cart')
+        let cart_data = await cart_response.json()
+
+        let total_items = 0
+        for(item in cart_data["items"]) {
+          if(cart_data["items"][item]["quantity"]) {
+            total_items += parseInt(cart_data["items"][item]["quantity"])
+          }
+        }
+
+        document.getElementById("total-num-items").innerText = cart_data["info"]["total_items"]
+        document.getElementById("num-items-in-cart").innerText = cart_data["info"]["total_items"]
+        document.getElementById("sub-total-of-items").innerText = "$"+cart_data["info"]["subtotal"]
+        document.getElementById("total-price-before-shipping").innerText = "$"+cart_data["info"]["subtotal"]
+        document.getElementById("cart-items-count").innerText = cart_data["info"]["total_items"]
+      })
+    })
+
+    document.querySelectorAll(".remove-product-from-cart").forEach(btn => {
+
+      btn.addEventListener("click", async function(e) {
+        //btn.disabled = true;
+        //btn.nextElementSibling.removeAttribute("hidden");
+        //btn.setAttribute("hidden", "true");
+
+        e.preventDefault();
+
+        let formProductInfo = {
+          product_id: e.target.parentElement.parentElement.product_id.value,
+          quantity: e.target.parentElement.parentElement.quantity.value
+        }
+
+        const response = await fetch('/cart/delete', {
+          method: 'DELETE',
+          body: JSON.stringify(formProductInfo),
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          }
+        })
+
+        let data = await response.json();
+
+        window.location.reload()
+
+        //btn.disabled = false;
+        //btn.nextElementSibling.setAttribute("hidden", "true");
+        //btn.removeAttribute("hidden");
+      })
+    })
+</script>

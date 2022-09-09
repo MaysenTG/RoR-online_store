@@ -22,10 +22,15 @@
           </div>
         </a>
         <div class="card-footer">
-          <%= form_for @order_item, remote: true do |f| %>
-            <%= f.hidden_field :product_id, :value => product.id %>
-            <span class="d-flex"><%= f.number_field :quantity, :value => 1, :min => 1, :class => "form-control" %><%= f.submit "Add to cart", :id => "add-to-cart-btn", :class => "btn btn-primary", :style => "width: 100%;" %></span>
-          <% end %>
+          <form id="add-to-cart-form" method="post" data-remote="true" data-turbo="false">
+            <input type="button" name="commit" value="Add to cart" class="btn btn-primary add-to-cart-btn" style="width: 100%;" data-disable-with="Add to cart">
+            <button class="btn btn-primary add-to-cart-loading" hidden type="button" disabled style="width: 100%;">
+              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              <span class="sr-only">Loading...</span>
+            </button>
+            <input value="1" min="1" class="form-control" type="number" name="quantity" id="product_quantity">
+            <input value="<%= product.id %>" autocomplete="off" type="hidden" name="product_id" id="product_id">
+          </form>
         </div>
       </div>
     <% end %>
@@ -54,4 +59,54 @@
        }
      }
    }
+
+  document.querySelectorAll(".add-to-cart-btn").forEach(btn => {
+
+    btn.addEventListener("click", async function(e) {
+      btn.disabled = true;
+      btn.nextElementSibling.removeAttribute("hidden");
+      btn.setAttribute("hidden", "true");
+
+      e.preventDefault();
+
+      let formProductInfo = {
+        product_id: e.target.parentElement.product_id.value,
+        quantity: e.target.parentElement.quantity.value
+      }
+
+      const response = await fetch('/cart/add', {
+        method: 'POST',
+        body: JSON.stringify(formProductInfo),
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        }
+      })
+
+      let data = await response.json();
+      btn.disabled = false;
+      btn.nextElementSibling.setAttribute("hidden", "true");
+      btn.removeAttribute("hidden");
+      let currentText = btn.value
+
+      btn.value = "✓";
+
+      setTimeout(() => {
+        btn.value = currentText
+      }, 2000)
+
+      //#cart-items-count
+      const cart_response = await fetch('/cart')
+      let cart_data = await cart_response.json()
+
+      let total_items = 0
+      for(item in cart_data["items"]) {
+        if(cart_data["items"][item]["quantity"]) {
+          total_items += parseInt(cart_data["items"][item]["quantity"])
+        }
+      }
+
+      document.getElementById("cart-items-count").innerText = total_items
+    })
+  })
 </script>

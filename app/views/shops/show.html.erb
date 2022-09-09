@@ -27,7 +27,7 @@
           <div class="row">
             <div class="col-xs-6">
               <span class="d-flex">
-                <%= form_for @order_item, remote: true do |f| %>
+                <%= form_for @order_item, remote: true, data: { turbo: false } do |f| %>
                   <%= f.hidden_field :product_id, :value => @shop.id %>
                   QTY: <%= f.number_field :quantity, :value => 1, :min => 1, :class => "form-control" %><br/>
                   <%= f.submit "Add to cart", :class => "btn btn-primary shop-button" %></span>
