@@ -5,6 +5,16 @@
   <h1 class="text-center">Products</h1>
   &nbsp; <input type="text" class="form-control" id="search-input-cards" onkeyup="searchProductsCards()" placeholder="Search for products.."></span>
 <br/>
+<button hidden id="cart-drawer-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Toggle right offcanvas</button>
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasRightLabel">Your cart</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    ...
+  </div>
+</div>
 <div class="container">
   <div class="row row-cols-2 row-cols-md-<% if num_products < 4 %><%= num_products %><% else %><%= max_products_per_row %><% end %> row-cols-lg-<% if num_products < 4 %><%= num_products %><% else %><%= max_products_per_row %><% end %>" id="cards-container">
     <% @products.each do |product| %>
@@ -107,6 +117,44 @@
       }
 
       document.getElementById("cart-items-count").innerText = total_items
+
+      //document.getElementById("cart-drawer-button").click();
+
+      let output = ""
+
+      for(item in cart_data["items"]) {
+        
+      output += `<div class="row mb-4 d-flex justify-content-between align-items-center">
+                      <div class="col-md-2 col-lg-2 col-xl-2">
+                        <img class="img-fluid rounded-3" src="https://rails-online-store.herokuapp.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBCdz09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--e6347174c97b622a47e4b33eaa85ba7df4a091c5/french-rustic-solid-oak-18m-dining-table-328952_700x.jpeg">
+                      </div>
+                      <div class="col-md-3 col-lg-3 col-xl-3">
+                        <h6 class="text-muted">${cart_data["items"][item]['title']}</h6>
+                      </div>
+                      <div class="col-md-2 col-lg-2 col-xl-2 d-flex">
+                        <span hidden data-individual-price-per-product="${cart_data["items"][item]["id"]}">${cart_data["items"][item]["price"]}</span>
+                        <form id="update-product-cart-form" method="post">
+                            <input style="width: 3rem;" value="${cart_data["items"][item]["quantity"]}" min="1" class="form-control" type="number" name="quantity" id="product_quantity">
+                        </form>
+                      </div>
+                      <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                        <h6 data-total-price-product="${cart_data["items"][item]["id"]}" class="mb-0"></h6>
+                      </div>
+                      <div class="col-md-2 col-lg-2 col-xl-2 text-end">
+                        <form id="delete-product-cart-form" method="delete">
+                          <input type="hidden" value="${cart_data["items"][item]["id"]}" name="product_id">
+                          <input value="${cart_data["items"][item]["quantity"]}" min="1" class="form-control" type="hidden" name="quantity" id="product_quantity">
+                          <span class="d-flex">
+                            <button type="button" class="remove-product-from-cart btn">X</button>
+                          </span>
+                        </form>
+                      </div>
+                    </div>
+                    <hr class="my-4">`
+      }
+
+      console.log(output)
+      document.querySelector(".offcanvas-body").innerHTML = output;
     })
   })
 </script>

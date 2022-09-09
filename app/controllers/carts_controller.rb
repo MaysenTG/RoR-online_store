@@ -9,6 +9,9 @@ class CartsController < ApplicationController
     begin
       session["cart_contents"]["items"].each do |line|
         if line.include?("id")
+          product = Product.find(line["id"])
+          #url = Rails.application.routes.url_helpers.rails_blob_path(product.image, disposition: "attachment", only_path: true)
+          #line["image"] = url
           @cart_items << line
         end
       end
