@@ -36,6 +36,9 @@
                             <input style="width: 5rem;" value="<%= item["quantity"] %>" min="1" class="form-control" type="number" name="quantity" id="product_quantity">
                             &nbsp;
                             <button type="button" class="update-product-cart-button btn btn-secondary">Update</button>
+                            <button hidden class="btn btn-secondary update-cart-loading" type="button" disabled style="width: 100%;">
+                              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            </button>
                           </span>
                         </form>
                       </div>
@@ -48,6 +51,9 @@
                           <input value="<%= item["quantity"] %>" min="1" class="form-control" type="hidden" name="quantity" id="product_quantity">
                           <span class="d-flex">
                             <button type="button" class="remove-product-from-cart btn btn-danger">X</button>
+                            <button hidden class="btn btn-danger remove-from-cart-loading" type="button" disabled style="width: 100%;">
+                              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            </button>
                           </span>
                         </form>
                       </div>
@@ -109,9 +115,9 @@
 
   document.querySelectorAll(".update-product-cart-button").forEach(btn => {
       btn.addEventListener("click", async function(e) {
-        //btn.disabled = true;
-        //btn.nextElementSibling.removeAttribute("hidden");
-        //btn.setAttribute("hidden", "true");
+        btn.disabled = true;
+        btn.nextElementSibling.removeAttribute("hidden");
+        btn.setAttribute("hidden", "true");
 
         e.preventDefault();
 
@@ -151,6 +157,10 @@
         document.getElementById("sub-total-of-items").innerText = "$"+cart_data["info"]["subtotal"]
         document.getElementById("total-price-before-shipping").innerText = "$"+cart_data["info"]["subtotal"]
         document.getElementById("cart-items-count").innerText = cart_data["info"]["total_items"]
+        
+        btn.disabled = false;
+        btn.nextElementSibling.setAttribute("hidden", "true");
+        btn.removeAttribute("hidden");
       })
     })
 
@@ -160,6 +170,9 @@
         //btn.disabled = true;
         //btn.nextElementSibling.removeAttribute("hidden");
         //btn.setAttribute("hidden", "true");
+        
+        btn.nextElementSibling.removeAttribute("hidden");
+        btn.setAttribute("hidden", "true");
 
         e.preventDefault();
 
@@ -179,7 +192,7 @@
 
         let data = await response.json();
 
-        window.location.reload()
+        //window.location.reload()
 
         //btn.disabled = false;
         //btn.nextElementSibling.setAttribute("hidden", "true");
