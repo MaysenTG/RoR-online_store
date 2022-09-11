@@ -10,7 +10,14 @@ class ShopsController < ApplicationController
   end
 
   def show
-    @shop = Product.find(params[:id])
+    @shop = Product.find(params[:product_id])
+    begin
+      @category = Category.find(params[:collection_id])
+    rescue => e
+      puts "no collection"
+      @category = nil
+    end
+    
     @order_item = current_order.order_items.new
   end
 end

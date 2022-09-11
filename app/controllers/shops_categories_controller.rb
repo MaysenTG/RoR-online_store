@@ -5,7 +5,7 @@ class ShopsCategoriesController < ApplicationController
   end
 
   def show
-    @category = Category.find(params[:id])
+    @category = Category.find(params[:collection_id])
     @products = @category.products
     @order_item = current_order.order_items.new
   end

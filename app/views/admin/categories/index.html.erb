@@ -1,6 +1,9 @@
 <h3 class="text-center" style="color: green"><%= notice %></h3>
-<h1 class="text-center">Edit categories (total: <%= @categories.size %>)</h1><h4>
-  
+<h1 class="text-center d-flex justify-content-between">
+  Edit categories (total: <%= @categories.size %>)
+  <%= link_to "New category", new_admin_category_path, class: "btn btn-primary btn-lg"  %>
+</h1>
+<br/>
 <div class="container">
   <table class="table">
     <thead>
@@ -15,14 +18,13 @@
           <td scope="row"><%= c.category %></td>
           <th scope="row"><%= c.id %></th>
           <td scope="row"><%= c.products.size %></td>
-          <td scope="row">
-            <%= link_to "Edit", edit_category_path(c) %>
-            <%= link_to "Show", category_path(c) %>
-            <%= button_to "Delete", category_path(c), method: :delete, class: "btn btn-danger", style: "float: right;", data: {confirm: "Are you sure?"} %>
+          <td scope="row" class="d-flex align-items-center">
+            <%= link_to "Edit", edit_admin_category_path(c) %>
+            &nbsp; &nbsp;
+            <%= button_to "Delete", admin_category_path(c), method: :delete, class: "btn btn-danger", style: "float: right;", data: {confirm: "Are you sure?"} %>
           </td>
         </tr>
       <% end %>
     </tbody>
   </table>
-  <%= link_to "New category", new_category_path, class: "btn btn-primary btn-lg"  %>
 </div>

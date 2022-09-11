@@ -4,23 +4,23 @@
     <div class="card-img-overlay">
         <div class="align-items-center" style="margin: 10rem auto; width: 60%; background-color: #FAF9F6; box-shadow: 2px 2px 2px 2px #888888;">
           <h5 style="padding-top: 2rem;" class="card-title text-center">Lorem ipsum delor</h5>
-          <div class="d-flex justify-content-center" style="width: 100%;"><%= link_to "Shop now", shops_path, class: "btn btn-primary", style: "margin-bottom: 2rem;" %></div>
+          <div class="d-flex justify-content-center" style="width: 100%;"><%= link_to "Shop now", products_path, class: "btn btn-primary", style: "margin-bottom: 2rem;" %></div>
         </div>
     </div>
   </div>
   &nbsp;
   <div class="card-group">
     <div class="card">
-      <%= link_to(shops_path) do %><img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" class="img-fluid card-img-top" alt="..."><% end %>
+      <%= link_to(products_path) do %><img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" class="img-fluid card-img-top" alt="..."><% end %>
       <div class="card-body">
-        <h5 class="card-title"><%= link_to "Products", shops_path %></h5>
+        <h5 class="card-title"><%= link_to "Products", products_path %></h5>
         <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
       </div>
     </div>
     <div class="card">
-      <%= link_to(shops_categories_path) do %><img src="https://images.unsplash.com/photo-1635352723068-ffb3b922397f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" class=" img-fluid card-img-top" alt="..."><% end %>
+      <%= link_to(collections_path) do %><img src="https://images.unsplash.com/photo-1635352723068-ffb3b922397f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" class=" img-fluid card-img-top" alt="..."><% end %>
       <div class="card-body">
-        <h5 class="card-title"><%= link_to "Categories", shops_categories_path %></h5>
+        <h5 class="card-title"><%= link_to "Categories", collections_path %></h5>
         <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
       </div>
     </div>

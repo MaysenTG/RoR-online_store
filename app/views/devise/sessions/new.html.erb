@@ -1,24 +1,21 @@
-<h2 class="text-center">Log in to edit store</h2>
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="container">
-    <div class="mb-3">
-      <%= f.label :email %><br />
+<main class="form-signin w-100 m-auto">
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+    <img class="mb-4" src="/docs/5.2/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+    <div class="form-floating">
       <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
+      <label for="floatingInput">Email address</label>
     </div>
-    <div class="mb-3">
-      <%= f.label :password %><br />
+    <div class="form-floating">
       <%= f.password_field :password, autocomplete: "current-password", class: "form-control" %>
+      <label for="floatingPassword">Password</label>
     </div>
-    <% if devise_mapping.rememberable? %>
-      <div class="mb-3">
-        <%= f.check_box :remember_me %>
-        <%= f.label :remember_me %>
-      </div>
-    <% end %>
-    <div class="actions">
-      <%= f.submit "Log in", class: "btn btn-primary" %>
+    <div class="checkbox mb-3">
+      <label>
+        <%= f.check_box :remember_me %> Remember me
+      </label>
     </div>
-    
-    <%= render "devise/shared/links" %>
-  </div>
-<% end %>
+    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+    <p class="mt-5 mb-3 text-muted">© 2017–2022</p>
+  <% end %>
+</main>

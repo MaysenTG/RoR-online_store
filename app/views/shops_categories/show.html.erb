@@ -1,12 +1,12 @@
 
 <p style="color: green"><%= notice %></p>
-<div class="container"><h4><%= link_to "Back to categories", :back %></h4></div><h1 class="text-center">Category: <%= @category.category %></h1></div>
+<div class="container"><h4><%= link_to "Back to categories", collections_path %></h4></div><h1 class="text-center">Category: <%= @category.category %></h1></div>
 <div class="container">
   <div class="row row-cols-2 row-cols-md-1 row-cols-md-3 g-2">
     <% @products.each do |product| %>
       <div class="col">
         <div class="card">
-          <a id="anchor-img" href="<%= shop_url(product) %>">
+          <a id="anchor-img" href="/collections/<%= product.category.id %>/products/<%= product.id %>">
             <% if product.image.attached? %>
               <%= image_tag product.image, style: "height: 10rem;", class: "image-fluid card-img-top"%>
             <% else %>

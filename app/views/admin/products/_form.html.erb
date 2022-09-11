@@ -14,7 +14,7 @@
     </div>
     </span>
   </div>
-  <%= form_with(model: product, style: "width: 80%;", id: 'productForm') do |form| %>
+  <%= form_with(model: [:admin, product], style: "width: 80%;", id: 'productForm') do |form| %>
     <% if product.errors.any? %>
       <div style="color: red">
         <h2><%= pluralize(product.errors.count, "error") %> prohibited this product from being saved:</h2>
@@ -59,7 +59,7 @@
           </div>
           <div class="mb-3">
             <label>Category: </label>
-            <%= form.select :category_id, Category.all.map {|c| [c.category, c.id]}, :prompt=>"Select category", onchange: "showSave();" %>
+            <%= form.select :category_id, Category.all.map {|c| [c.category, c.id]}, :prompt=>"Select category", onchange: "showSave();", :class => "form-select" %>
           </div>
         </div>
       </div>

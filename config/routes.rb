@@ -10,11 +10,22 @@ Rails.application.routes.draw do
   
   
 
-  resources :shops_categories
-  resources :products
-  resources :categories
-  resources :shops, only: [:index, :show]
   
+  namespace :admin do
+    resources :products
+    resources :categories
+  end
+  
+  get '/products' => "shops#index"
+  get '/products/:product_id' => "shops#show"
+  
+  get '/collections' => "shops_categories#index"
+  get '/collections/:collection_id' => "shops_categories#show"
+  
+  get '/collections/:collection_id/products/:product_id' => "shops#show"
+  
+  #resources :shops, only: [:index, :show]
+  #resources :shops_categories
   resources :order_items
   resources :carts, only: [:show]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

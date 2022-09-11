@@ -19,7 +19,7 @@
   <div class="row row-cols-2 row-cols-md-<% if num_products < 4 %><%= num_products %><% else %><%= max_products_per_row %><% end %> row-cols-lg-<% if num_products < 4 %><%= num_products %><% else %><%= max_products_per_row %><% end %>" id="cards-container">
     <% @products.each do |product| %>
       <div class="card" style="height: 100%;">
-        <a id="anchor-img" href="<%= shop_url(product) %>">
+        <a id="anchor-img" href="/products/<%= product.id %>">
           <% if product.image.attached? %>
             <%= image_tag product.image, style: "max-height: 15rem", class: "image-fluid card-img-top"%>
           <% else %>
