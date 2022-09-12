@@ -4,28 +4,7 @@
 <div class="container">
   <div class="row row-cols-2 row-cols-md-1 row-cols-md-3 g-2">
     <% @products.each do |product| %>
-      <div class="col">
-        <div class="card">
-          <a id="anchor-img" href="/collections/<%= product.category.id %>/products/<%= product.id %>">
-            <% if product.image.attached? %>
-              <%= image_tag product.image, style: "height: 10rem;", class: "image-fluid card-img-top"%>
-            <% else %>
-              <img src="" style="height: 15rem;" class="card-img-top image-fluid" alt="...">
-            <% end %>
-            <div class="card-body">
-              <h5 class="card-title"><%= product.title %></h5>
-              <p class="card-text"><%= product.description %></p>
-              $<%= product.price %>
-            </div>
-          </a>
-          <div class="card-footer">
-            <%= form_for @order_item, remote: true do |f| %>
-              <%= f.hidden_field :product_id, :value => product.id %>
-              <span class="d-flex"><%= f.number_field :quantity, :value => 1, :min => 1, :class => "form-control" %><%= f.submit "Add to cart", :id => "add-to-cart-btn", :class => "btn btn-primary", :style => "width: 100%;" %></span>
-            <% end %>
-          </div>
-        </div>
-      </div>
+      <%= render partial: "snippets/product", locals: { product: product }%>
     <% end %>
   </div>
 </div>

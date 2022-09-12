@@ -18,31 +18,7 @@
 <div class="container">
   <div class="row row-cols-2 row-cols-md-<% if num_products < 4 %><%= num_products %><% else %><%= max_products_per_row %><% end %> row-cols-lg-<% if num_products < 4 %><%= num_products %><% else %><%= max_products_per_row %><% end %>" id="cards-container">
     <% @products.each do |product| %>
-      <div class="card" style="height: 100%;">
-        <a id="anchor-img" href="/products/<%= product.id %>">
-          <% if product.image.attached? %>
-            <%= image_tag product.image, style: "max-height: 15rem", class: "image-fluid card-img-top"%>
-          <% else %>
-            <img src="https://dummyimage.com/100/fff/0011ff.png&text=Image+Not+Found" style="height: 15rem;" class="card-img-top image-fluid" alt="...">
-          <% end %>
-          <div class="card-body">
-            <h5 class="card-title"><%= product.title %></h5>
-            <p class="card-text"><%= product.description %></p>
-            $<%= product.price %>
-          </div>
-        </a>
-        <div class="card-footer">
-          <form id="add-to-cart-form" method="post" data-remote="true" data-turbo="false">
-            <input type="button" name="commit" value="Add to cart" class="btn btn-primary add-to-cart-btn" style="width: 100%;" data-disable-with="Add to cart">
-            <button class="btn btn-primary add-to-cart-loading" hidden type="button" disabled style="width: 100%;">
-              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-              <span class="sr-only">Loading...</span>
-            </button>
-            <input value="1" min="1" class="form-control" type="number" name="quantity" id="product_quantity">
-            <input value="<%= product.id %>" autocomplete="off" type="hidden" name="product_id" id="product_id">
-          </form>
-        </div>
-      </div>
+      <%= render partial: "snippets/product", locals: { product: product }%>
     <% end %>
   </div>
 </div>
@@ -69,92 +45,4 @@
        }
      }
    }
-
-  document.querySelectorAll(".add-to-cart-btn").forEach(btn => {
-
-    btn.addEventListener("click", async function(e) {
-      btn.disabled = true;
-      btn.nextElementSibling.removeAttribute("hidden");
-      btn.setAttribute("hidden", "true");
-
-      e.preventDefault();
-
-      let formProductInfo = {
-        product_id: e.target.parentElement.product_id.value,
-        quantity: e.target.parentElement.quantity.value
-      }
-
-      const response = await fetch('/cart/add', {
-        method: 'POST',
-        body: JSON.stringify(formProductInfo),
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        }
-      })
-
-      let data = await response.json();
-      btn.disabled = false;
-      btn.nextElementSibling.setAttribute("hidden", "true");
-      btn.removeAttribute("hidden");
-      let currentText = btn.value
-
-      btn.value = "✓";
-
-      setTimeout(() => {
-        btn.value = currentText
-      }, 2000)
-
-      //#cart-items-count
-      const cart_response = await fetch('/cart')
-      let cart_data = await cart_response.json()
-
-      let total_items = 0
-      for(item in cart_data["items"]) {
-        if(cart_data["items"][item]["quantity"]) {
-          total_items += parseInt(cart_data["items"][item]["quantity"])
-        }
-      }
-
-      document.getElementById("cart-items-count").innerText = total_items
-
-      //document.getElementById("cart-drawer-button").click();
-
-      let output = ""
-
-      for(item in cart_data["items"]) {
-        
-      output += `<div class="row mb-4 d-flex justify-content-between align-items-center">
-                      <div class="col-md-2 col-lg-2 col-xl-2">
-                        <img class="img-fluid rounded-3" src="https://rails-online-store.herokuapp.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBCdz09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--e6347174c97b622a47e4b33eaa85ba7df4a091c5/french-rustic-solid-oak-18m-dining-table-328952_700x.jpeg">
-                      </div>
-                      <div class="col-md-3 col-lg-3 col-xl-3">
-                        <h6 class="text-muted">${cart_data["items"][item]['title']}</h6>
-                      </div>
-                      <div class="col-md-2 col-lg-2 col-xl-2 d-flex">
-                        <span hidden data-individual-price-per-product="${cart_data["items"][item]["id"]}">${cart_data["items"][item]["price"]}</span>
-                        <form id="update-product-cart-form" method="post">
-                            <input style="width: 3rem;" value="${cart_data["items"][item]["quantity"]}" min="1" class="form-control" type="number" name="quantity" id="product_quantity">
-                        </form>
-                      </div>
-                      <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                        <h6 data-total-price-product="${cart_data["items"][item]["id"]}" class="mb-0"></h6>
-                      </div>
-                      <div class="col-md-2 col-lg-2 col-xl-2 text-end">
-                        <form id="delete-product-cart-form" method="delete">
-                          <input type="hidden" value="${cart_data["items"][item]["id"]}" name="product_id">
-                          <input value="${cart_data["items"][item]["quantity"]}" min="1" class="form-control" type="hidden" name="quantity" id="product_quantity">
-                          <span class="d-flex">
-                            <button type="button" class="remove-product-from-cart btn">X</button>
-                          </span>
-                        </form>
-                      </div>
-                    </div>
-                    <hr class="my-4">`
-      }
-
-      console.log(output)
-      document.querySelector(".offcanvas-body").innerHTML = output;
-    })
-  })
 </script>

@@ -1,5 +1,5 @@
 <p style="color: green"><%= notice %></p>
-<h1 class="text-center">Categories</h1>
+<h1 class="text-center"><%= I18n.t 'collections.all_collections_title' %></h1>
 <div class="container">
   <div class="row row-cols-2 row-cols-md-1 row-cols-md-3 g-2">
     <% @categories.each do |category| %>
@@ -7,7 +7,7 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title"><%= category.category %> (<%= category.products.size %>)</h5>
-            <h6><a href="/collections/<%= category.id %>">Show products</a></h6>
+            <h6><a href="/collections/<%= category.id %>"><%= I18n.t 'collections.view_products_btn' %></a></h6>
           </div>
         </div>
       </div>

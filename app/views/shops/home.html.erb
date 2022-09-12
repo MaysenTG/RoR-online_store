@@ -3,8 +3,8 @@
     <img height="600" src="https://images.unsplash.com/photo-1485470733090-0aae1788d5af?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1817&q=80" class="card-img" alt="...">
     <div class="card-img-overlay">
         <div class="align-items-center" style="margin: 10rem auto; width: 60%; background-color: #FAF9F6; box-shadow: 2px 2px 2px 2px #888888;">
-          <h5 style="padding-top: 2rem;" class="card-title text-center">Lorem ipsum delor</h5>
-          <div class="d-flex justify-content-center" style="width: 100%;"><%= link_to "Shop now", products_path, class: "btn btn-primary", style: "margin-bottom: 2rem;" %></div>
+          <h5 style="padding-top: 2rem;" class="card-title text-center"><%= I18n.t 'general.hero_image_text' %></h5>
+          <div class="d-flex justify-content-center" style="width: 100%;"><%= link_to (I18n.t 'general.shop_now_btn'), products_path, class: "btn btn-primary", style: "margin-bottom: 2rem;" %></div>
         </div>
     </div>
   </div>

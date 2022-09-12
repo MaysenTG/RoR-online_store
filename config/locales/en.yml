@@ -30,4 +30,24 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  general:
+    shop_now_btn: "Shop now"
+    hero_image_text: "Online store built using Ruby on Rails"
+  
+  products:
+    add_to_cart: "Add to cart"
+    adding_to_cart: "Adding to cart"
+    
+    
+  collections:
+    back_to_collection: "Back to %{collection} collection"
+    all_collections_title: "All collections"
+    view_products_btn: "View products"
+    
+    
+  navigation:
+    home: "Home"
+    products: "All products"
+    collections: "All collections"
+    
+    
