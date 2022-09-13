@@ -1,7 +1,7 @@
 <div class="d-flex">
   <a href="/admin/products"><i class="fs-2 bi bi-arrow-left-square"></i></a>
 </div>
-
 <%= render "form", product: @product, formType: "Edit" %>
-
+<br>
+<%= button_to "Delete", admin_product_path(@product), method: :delete, class: "mt-5 btn btn-danger", data: {confirm: "Are you sure?"} %>
 <br>

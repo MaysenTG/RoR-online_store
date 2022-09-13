@@ -1,0 +1,129 @@
+<div class="content">
+  <!-- Start Content-->
+  <div class="container-fluid">
+    <!-- start page title -->
+    <div class="row">
+      <div class="col-12">
+        <div class="d-flex">
+          <a href="/admin/orders"><i class="fs-2 bi bi-arrow-left-square"></i></a>
+        </div>
+        <div class="page-title-box">
+          <h2 class="page-title">Order Details</h2>
+        </div>
+      </div>
+    </div>
+    <!-- end page title -->
+    <!-- end row -->
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="header-title mb-3">Items from Order <strong>#<%= @order["id"] %></strong></h4>
+            <div class="table-responsive">
+              <table class="table-hover table mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @order_products.each do |product| %>
+                    <tr data-href="/admin/products/<%= product['id'] %>/edit">
+                      <td><%= product["title"] %></td>
+                      <td><%= product["quantity"] %></td>
+                      <td><%= product["price"] %></td>
+                      <td><%= product["total_price"] %></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+            <!-- end table-responsive -->
+          </div>
+        </div>
+      </div>
+      <!-- end col -->
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="header-title mb-3">Order Summary</h4>
+            <div class="table-responsive">
+              <table class="table mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>Description</th>
+                    <th>Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Grand Total: </td>
+                    <td><%= number_to_currency(sub_total_in_cart) %></td>
+                  </tr>
+                  <tr>
+                    <th>Total: </th>
+                    <td><%= number_to_currency(sub_total_in_cart) %></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- end table-responsive -->
+          </div>
+        </div>
+      </div>
+      <!-- end col -->
+    </div>
+    <br/>
+    <!-- end row -->
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="header-title mb-3">Shipping Information</h4>
+            <h5><%= @customer["name"] %></h5>
+            <address class="mb-0 font-14 address-lg">
+              <%= @customer["address"]["line1"] %><br>
+              <%= @customer["address"]["city"] %>, <%= @customer["address"]["country"] %> <%= @customer["address"]["postal_code"] %><br>
+              <abbr title="Phone">P:</abbr><%= @customer["phone"] %><br>
+            </address>
+          </div>
+        </div>
+      </div>
+      <!-- end col -->
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="header-title mb-3">Billing Information</h4>
+            <ul class="list-unstyled mb-0">
+              <li>
+                <p class="mb-2"><span class="fw-bold me-2">Payment Type:</span> <%= @order["payment_method_details"]["type"] %></p>
+                <p class="mb-2"><span class="fw-bold me-2">Provider:</span> Visa ending in <%= @order["payment_method_details"]["card"]["last4"] %></p>
+                <p class="mb-2"><span class="fw-bold me-2">Valid Date:</span> <%= @order["payment_method_details"]["card"]["exp_month"] %>/<%= @order["payment_method_details"]["card"]["exp_year"] %></p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- end col -->
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="header-title mb-3">Customer Info</h4>
+            <div class="text-center">
+              <i class="mdi mdi-truck-fast h2 text-muted"></i>
+              <a class="h5" href='/admin/customers/<%= @customer['id'] %>'><b>Name: </b><%= @customer["name"] %></a>
+              <p class="mb-1"><b>Order ID :</b> xxxx235</p>
+              <p class="mb-0"><b>Payment Mode :</b> COD</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end col -->
+    </div>
+    <!-- end row -->
+  </div>
+  <!-- container -->
+</div>

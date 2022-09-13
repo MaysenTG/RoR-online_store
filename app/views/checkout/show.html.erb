@@ -1,0 +1,149 @@
+<div class="container">
+  <main>
+    <div class="py-5 text-center">
+      <a href="/carts/show"><img class="d-block mx-auto mb-4" src="/docs/5.2/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57"></a>
+      <h2>Checkout form</h2>
+      <p class="lead">This checkout uses the Stripe API on TEST MODE, so no real payments are able to be captured</p>
+    </div>
+    <div class="row g-5">
+      <div class="col-md-5 col-lg-4 order-md-last">
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+          <span class="text-primary">Your cart</span>
+          <span class="badge bg-primary rounded-pill"><%= @cart_total_items %></span>
+        </h4>
+        <ul class="list-group mb-3">
+          <% @line_items.each do |product| %>
+            <li class="list-group-item d-flex justify-content-between lh-sm">
+              <p><%= product["quantity"] %>x</p>
+              <div>
+                <h6 class="my-0"><%= product["title"] %></h6>
+                <small class="text-muted"><%= product["description"].truncate(30) %></small>
+              </div>
+              <span class="text-muted">Total: <%= number_to_currency(product["price"].to_i * product["quantity"].to_i) %></span>
+            </li>
+          <% end %>
+          <li class="list-group-item d-flex justify-content-between">
+            <span>Total (USD)</span>
+            <strong><%= number_to_currency(@cart_total_cost) %></strong>
+          </li>
+        </ul>
+        <form class="card p-2">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Promo code">
+            <button type="submit" class="btn btn-secondary" disabled>Redeem</button>
+          </div>
+        </form>
+      </div>
+      <div class="col-md-7 col-lg-8">
+        <h4 class="mb-3">Shipping address</h4>
+        <!-- <form id="payment-form" class="needs-validation was-validated" novalidate="" action="create_customer"> -->
+        <form id="payment-form" action="create-customer" method="POST">
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <label for="firstName" class="form-label">First name</label>
+              <input name="customer[first_name]" type="text" class="validation-required form-control" id="firstName" placeholder="" value="" required="">
+              <div class="invalid-feedback">
+                Valid first name is required.
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <label for="lastName" class="form-label">Last name</label>
+              <input name="customer[last_name]" type="text" class="validation-required form-control" id="lastName" placeholder="" value="" required="">
+              <div class="invalid-feedback">
+                Valid last name is required.
+              </div>
+            </div>
+            <div class="col-12">
+              <label for="email" class="form-label">Email</label>
+              <input name="customer[email]" type="email" class="validation-required form-control" id="email" placeholder="you@example.com">
+              <div class="invalid-feedback">
+                Please enter a valid email address for shipping updates.
+              </div>
+            </div>
+            <div class="col-12">
+              <label for="address" class="form-label">Address</label>
+              <input name="address[address_1]" type="text" class="validation-required form-control" id="address" placeholder="1234 Main St" required="">
+              <div class="invalid-feedback">
+                Please enter your shipping address.
+              </div>
+            </div>
+            <div class="col-12">
+              <label for="address" class="form-label">City</label>
+              <input name="address[city]" type="text" class="validation-required form-control" id="address" placeholder="Cambridge" required="">
+              <div class="invalid-feedback">
+                Please enter your shipping address.
+              </div>
+            </div>
+            <div class="col-12">
+              <label for="address2" class="form-label">Address 2 <span class="text-muted">(Optional)</span></label>
+              <input name="address[address_2]" type="text" class="form-control" id="address2" placeholder="Apartment or suite">
+            </div>
+            <div class="col-md-5">
+              <label for="country" class="form-label">Country</label>
+              <select name="address[country]" class="validation-required form-select" id="country" required="">
+                <option value="">Choose...</option>
+                <option value="New Zealand">New Zealand</option>
+              </select>
+              <div class="invalid-feedback">
+                Please select a valid country.
+              </div>
+            </div>
+            <div class="col-md-4">
+              <label for="state" class="form-label">State</label>
+              <select name="address[region]" class="validation-required form-select" id="state" required="">
+                <option value="">Choose...</option>
+                <option value="Northland">Northland</option>
+                <option value="Auckland">Auckland</option>
+                <option value="Waikato">Waikato</option>
+                <option value="Bay of Plenty">Bay of Plenty</option>
+                <option value="Gisborne">Gisborne</option>
+                <option value="Hawke's Bat">Hawke's Bay</option>
+                <option value="Taranaki">Taranaki</option>
+                <option value="Manawatū-Whanganui">Manawatū-Whanganui</option>
+                <option value="Wellington">Wellington</option>
+                <option value="Tasman">Tasman</option>
+                <option value="Nelson">Nelson</option>
+                <option value="Marlborough">Marlborough</option>
+                <option value="West Coast">West Coast</option>
+                <option value="Canterbury">Canterbury</option>
+                <option value="Otago">Otago</option>
+                <option value="Southland">Southland</option>
+              </select>
+              <div class="invalid-feedback">
+                Please provide a valid state.
+              </div>
+            </div>
+            <div class="col-md-3">
+              <label for="zip" class="form-label">Zip</label>
+              <input name="address[zip]" type="text" class="validation-required form-control" id="zip" placeholder="" required="">
+              <div class="invalid-feedback">
+                Zip code required.
+              </div>
+            </div>
+          </div>
+          <hr class="my-4">
+          <div class="form-check">
+            <input type="checkbox" class="validation-required form-check-input" id="same-address">
+            <label class="form-check-label" for="same-address">Shipping address is the same as my billing address</label>
+          </div>
+          <div class="form-check">
+            <input type="checkbox" class="validation-required form-check-input" id="save-info">
+            <label class="form-check-label" for="save-info">Save this information for next time</label>
+          </div>
+          <hr class="my-4">
+          <button id="continue-to-payment" class="w-100 btn btn-primary btn-lg">Continue to payment</button>
+        </form>
+      </div>
+    </div>
+  </main>
+  <footer class="my-5 pt-5 text-muted text-center text-small">
+    <p class="mb-1">© 2022 Maysen Greenwood Online store</p>
+    <ul class="list-inline">
+      <li class="list-inline-item"><a href="#">Privacy</a></li>
+      <li class="list-inline-item"><a href="#">Terms</a></li>
+      <li class="list-inline-item"><a href="#">Support</a></li>
+    </ul>
+  </footer>
+</div>
+
+<%= render "snippets/checkout-validation" %>

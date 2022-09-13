@@ -1,6 +1,6 @@
 <h3 class="text-center" style="color: green"><%= notice %></h3>
 <h1 class="text-center d-flex justify-content-between">
-  Edit categories (total: <%= @categories.size %>)
+  Categories (total: <%= @categories.size %>)
   <%= link_to "New category", new_admin_category_path, class: "btn btn-primary btn-lg"  %>
 </h1>
 <br/>
@@ -10,19 +10,13 @@
       <th scope="col">Title</th>
       <th scope="col">Category ID</th>
       <th scope="col">Number of products</th>
-      <th scope="col">Actions</th>
     </thead>
     <tbody>
       <% @categories.each do |c| %>
-        <tr>
+        <tr data-href="<%= edit_admin_category_path(c) %>">
           <td scope="row"><%= c.category %></td>
           <th scope="row"><%= c.id %></th>
           <td scope="row"><%= c.products.size %></td>
-          <td scope="row" class="d-flex align-items-center">
-            <%= link_to "Edit", edit_admin_category_path(c) %>
-            &nbsp; &nbsp;
-            <%= button_to "Delete", admin_category_path(c), method: :delete, class: "btn btn-danger", style: "float: right;", data: {confirm: "Are you sure?"} %>
-          </td>
         </tr>
       <% end %>
     </tbody>

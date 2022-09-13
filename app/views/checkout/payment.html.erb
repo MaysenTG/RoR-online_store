@@ -1,0 +1,64 @@
+<div class="container">
+  <main>
+    <div class="py-5 text-center">
+      <a href="/carts/show"><img class="d-block mx-auto mb-4" src="/docs/5.2/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57"></a>
+      <h2>Checkout form</h2>
+      <p class="lead">This checkout uses the Stripe API on TEST MODE, so no real payments are able to be captured</p>
+    </div>
+    <div class="row g-5">
+      <div class="col-md-12 col-lg-4 col-sm-12 order-md-last">
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+          <span class="text-primary">Your cart</span>
+          <span class="badge bg-primary rounded-pill"><%= @cart_total_items %></span>
+        </h4>
+        <ul class="list-group mb-3">
+          <% @line_items.each do |product| %>
+            <li class="list-group-item d-flex justify-content-between lh-sm">
+              <p><%= product["quantity"] %>x</p>
+              <div>
+                <h6 class="my-0"><%= product["title"] %></h6>
+                <small class="text-muted"><%= product["description"].truncate(30) %></small>
+              </div>
+              <span class="text-muted">Total: <%= number_to_currency(product["price"].to_i * product["quantity"].to_i) %></span>
+            </li>
+          <% end %>
+          <li class="list-group-item d-flex justify-content-between">
+            <span>Total (USD)</span>
+            <strong><%= number_to_currency(@cart_total_cost) %></strong>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-12 col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="header-title mb-3">Shipping Information</h4>
+            <address class="mb-0 font-14 address-lg">
+              <%= @shipping_info["line1"] %>, <% if @shipping_info["line2"] %><%= @shipping_info["line2"] %><% end %><br>
+              <%= @shipping_info["city"] %>, <%= @shipping_info["state"] %>, <%= @shipping_info["postal_code"] %><br>
+              <abbr title="Phone">P:</abbr> (123) 456-7890 <br>
+            </address>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 col-lg-8 col-sm-12">
+        <form style="width: 100%;" id="payment-form">
+          <div id="payment-element">
+          </div>
+          <button disabled id="submit">
+            <div class="spinner hidden" id="spinner"></div>
+            <span id="button-text">Pay now</span>
+          </button>
+          <div id="payment-message" class="hidden"></div>
+        </form>
+      </div>
+    </div>
+  </main>
+  <footer class="my-5 pt-5 text-muted text-center text-small">
+    <p class="mb-1">© 2022 Maysen Greenwood Online store</p>
+    <ul class="list-inline">
+      <li class="list-inline-item"><a href="#">Privacy</a></li>
+      <li class="list-inline-item"><a href="#">Terms</a></li>
+      <li class="list-inline-item"><a href="#">Support</a></li>
+    </ul>
+  </footer>
+</div>

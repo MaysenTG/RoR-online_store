@@ -1,0 +1,23 @@
+<h3 class="text-center" style="color: green"><%= notice %></h3>
+<h1 class="text-center d-flex justify-content-between">
+  Customers
+</h1>
+<br/>
+<div class="container">
+  <input type="text" class="form-control" id="search-input" placeholder="Search for products.." style="width: 100%;">
+  <br/>
+  <table class="table table-hover" id="product-table">
+    <thead>
+      <th scope="col">Customer ID</th>
+      <th scope="col">Name</th>
+    </thead>
+    <tbody>
+      <% @customer_data.each do |o| %>
+        <tr>
+          <td scope="row"><%= o.id %></td>
+          <td scope="row"><%= o.name %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

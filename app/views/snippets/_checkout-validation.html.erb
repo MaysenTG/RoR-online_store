@@ -1,0 +1,38 @@
+<script>
+  let inputs = document.querySelectorAll("input.validation-required, select.validation-required");
+  let valid = true;
+
+  value = true;
+  inputs.forEach(function(input) {
+    input.addEventListener('input', function() {
+      checkValidity(input);
+    });
+  });
+
+
+  document.getElementById("continue-to-payment").addEventListener("click", function(e) {
+    e.preventDefault();
+    
+    let error_msg = `<div style='color: red;'>Name on card is required</div>`
+
+    valid = true;
+    inputs.forEach(function(input) {
+      checkValidity(input);
+    });
+
+    if(valid) {
+      document.getElementById("payment-form").submit();
+    }
+  });
+
+  function checkValidity(item) {
+    if(item.value == "" || item.value == null || item.value.length <= 1) {
+      valid = false
+      item.classList.add("is-invalid");
+      item.classList.remove("is-valid");
+    } else {
+      item.classList.remove("is-invalid");
+      item.classList.add("is-valid");
+    }
+  }
+</script>

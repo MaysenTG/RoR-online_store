@@ -8,12 +8,24 @@ Rails.application.routes.draw do
   delete '/cart/delete' => 'carts#remove_item'
   put '/cart/update' => 'carts#update_quantity'
   
+  # Checkout routing
+  get '/checkout' => 'checkout#show'
+  get '/checkout/payment' => 'checkout#payment'
+  get '/checkout/success' => 'checkout#order_page'
   
-
+  # Stripe API
+  post '/create-payment-intent' => 'checkout#create_payment_intent'
+  post '/create-customer' => 'checkout#create_customer'
   
+  # Admin dashboard
   namespace :admin do
     resources :products
     resources :categories
+    get '' => 'dashboard#home'
+    get '/orders' => 'dashboard#orders'
+    get '/orders/:order_id' => 'order#show'
+    get '/customers' => 'dashboard#customers'
+    get '/customers/:customer_id' => 'customer#show'
   end
   
   get '/products' => "shops#index"

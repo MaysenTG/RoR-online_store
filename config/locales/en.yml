@@ -37,7 +37,7 @@ en:
   products:
     add_to_cart: "Add to cart"
     adding_to_cart: "Adding to cart"
-    
+    added_to_cart: "✓"
     
   collections:
     back_to_collection: "Back to %{collection} collection"

@@ -3,13 +3,19 @@
   <head>
     <title>OnlineStore</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    
+    <script src="https://js.stripe.com/v3/"></script>
+    
+    <% if request.path.include?("/payment") %>
+      <%= stylesheet_link_tag "checkout" %>
+    <% end %>
+    
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    
     <% if request.path.include?("admin") %>
       <!-- ADMIN CSS -->
       <%= stylesheet_link_tag "admin" %>
@@ -26,7 +32,7 @@
     <% if request.path.include?("admin") %>
       <%= render partial: "layouts/admin/header" %>
       <%= render partial: "layouts/admin/dashboard" %>
-    <% elsif request.path.include?("sign_in") %>
+    <% elsif request.path.include?("sign_in") or request.path.include?("checkout") %>
       <%= yield %>
     <% else %>
       <%= render "layouts/navigation" %>
@@ -37,5 +43,29 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+      (function () {
+      var current = location.pathname.split('/')[2];
+      if (current === "") return;
+
+      if (current == null && location.pathname.split('/')[1] == "admin") {
+        current = "/admin";
+      };
+
+      var menuItems = document.querySelectorAll('li.nav-item > a');
+      for (var i = 0, len = menuItems.length; i < len; i++) {
+          if (menuItems[i].getAttribute("href").indexOf(current) !== -1) {
+              menuItems[i].classList.add("active");
+              break;
+          }
+      }
+      })();
+      
+      jQuery(document).ready(function($) {
+          $("tr").click(function() {
+            window.location = $(this).data("href");
+          });
+      });
+    </script>
   </body>
 </html>

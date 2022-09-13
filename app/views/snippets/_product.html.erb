@@ -25,7 +25,6 @@
 </div>
 <script>
   document.querySelectorAll(".add-to-cart-btn").forEach(btn => {
-
       btn.addEventListener("click", async function(e) {
         btn.disabled = true;
         btn.nextElementSibling.removeAttribute("hidden");
@@ -49,28 +48,18 @@
 
         let data = await response.json();
 
-        //#cart-items-count
         const cart_response = await fetch('/cart')
         let cart_data = await cart_response.json()
 
-        let total_items = 0
-        for(item in cart_data["items"]) {
-          if(cart_data["items"][item]["quantity"]) {
-            total_items += parseInt(cart_data["items"][item]["quantity"])
-          }
-        }
-
-        document.getElementById("cart-items-count").innerText = total_items
-
-        btn.disabled = false;
         btn.nextElementSibling.setAttribute("hidden", "true");
         btn.removeAttribute("hidden");
-        let currentText = btn.value
-
-        btn.value = "✓";
+        btn.value = '<%= t("products.added_to_cart") %>';
+        
+        document.getElementById("cart-items-count").innerText = cart_data["info"]["total_items"]
 
         setTimeout(() => {
-          btn.value = currentText
+          btn.value = '<%= t("products.add_to_cart") %>'
+          btn.disabled = false;
         }, 2000)
 
         //document.getElementById("cart-drawer-button").click();

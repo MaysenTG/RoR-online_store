@@ -12,6 +12,8 @@ class CartsController < ApplicationController
           product = Product.find(line["id"])
           #url = Rails.application.routes.url_helpers.rails_blob_path(product.image, disposition: "attachment", only_path: true)
           #line["image"] = url
+          url = Rails.application.routes.url_helpers.rails_blob_path(product.image, disposition: "attachment", only_path: true)
+          line["image_url"] = url
           @cart_items << line
         end
       end
@@ -19,15 +21,7 @@ class CartsController < ApplicationController
       @cart_items = []
     end
     
-    sum = 0
-    if @cart_items != nil
-      @cart_items.each do |item|
-        sum += item["quantity"].to_i
-      end
-      @total_items_in_cart = sum
-    else
-      @total_items_in_cart = 0
-    end
+    @total_items_in_cart = total_items_in_cart
   end
   
   def update_quantity
@@ -76,11 +70,15 @@ class CartsController < ApplicationController
         session["cart_contents"]["items"].detect { |e| e['id'] == @product.id }['quantity'] = new_quantity.to_i
       else
         @cart_product = @product.as_json
+        url = Rails.application.routes.url_helpers.rails_blob_path(@product.image, disposition: "attachment", only_path: true)
+        @cart_product["image_url"] = url
         @cart_product["quantity"] = @quantity
         session["cart_contents"]["items"] << (@cart_product) 
       end
     else #session["cart_contents"]["items"].size <= 1
       @cart_product = @product.as_json
+      url = Rails.application.routes.url_helpers.rails_blob_path(@product.image, disposition: "attachment", only_path: true)
+      @cart_product["image_url"] = url
       @cart_product["quantity"] = @quantity
       session["cart_contents"]["items"] = [@cart_product]
     end
@@ -97,6 +95,13 @@ class CartsController < ApplicationController
   
   def get_cart
     cart = session["cart_contents"]
+    
+    session["cart_contents"]["items"].each do |item|
+      # Get the URL of the active storage image
+      product = Product.find(item["id"])
+      url = Rails.application.routes.url_helpers.rails_blob_path(product.image, disposition: "attachment", only_path: true)
+      item["image_url"] = url
+    end
     render json: session["cart_contents"].as_json
   end
   
@@ -124,11 +129,7 @@ class CartsController < ApplicationController
         },
       }.as_json
     else
-      #session["cart_contents"].clear
-      #session.clear
-      #reset_session
-      #session["cart_contents"] = []
-      #puts session["cart_contents"]
+
     end
   end
   

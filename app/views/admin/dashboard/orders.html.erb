@@ -1,0 +1,25 @@
+<h3 class="text-center" style="color: green"><%= notice %></h3>
+<h1 class="text-center d-flex justify-content-between">
+  Orders
+</h1>
+<br/>
+<div class="container">
+  <input type="text" class="form-control" id="search-input" placeholder="Search for products.." style="width: 100%;">
+  <br/>
+  <table class="table table-hover" id="product-table">
+    <thead>
+      <th scope="col">Order ID</th>
+      <th scope="col">Customer</th>
+      <th scope="col">Order total</th>
+    </thead>
+    <tbody>
+      <% @orders.each do |o| %>
+        <tr data-href="/admin/orders/<%= o.id %>">
+          <td scope="row"><%= o.id %></td>
+          <td scope="row"><%= o.customer %></td>
+          <td scope="row"><%= o.amount %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -9,7 +9,6 @@ gem "rails", "~> 7.0.2", ">= 7.0.2.2"
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
 
-
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", "~> 5.0"
 
@@ -29,6 +28,7 @@ gem 'devise'
 gem 'redis', '~> 3.3', '>= 3.3.1'
 gem 'aws-sdk-s3', require: false
 gem 'bullet', group: 'development'
+gem 'stripe'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
