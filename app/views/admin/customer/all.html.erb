@@ -13,7 +13,7 @@
     </thead>
     <tbody>
       <% @customer_data.each do |o| %>
-        <tr>
+        <tr data-href="/admin/customers/<%= o.id %>">
           <td scope="row"><%= o.id %></td>
           <td scope="row"><%= o.name %></td>
         </tr>

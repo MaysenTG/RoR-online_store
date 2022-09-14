@@ -24,7 +24,7 @@ Rails.application.routes.draw do
     get '' => 'dashboard#home'
     get '/orders' => 'dashboard#orders'
     get '/orders/:order_id' => 'order#show'
-    get '/customers' => 'dashboard#customers'
+    get '/customers' => 'customer#all'
     get '/customers/:customer_id' => 'customer#show'
   end
   

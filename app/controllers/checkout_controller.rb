@@ -1,7 +1,3 @@
-require 'stripe'
-
-Stripe.api_key = 'sk_test_51Lh5hlACYImz8K7GqqE3FKHP0KCZJUpgS192Wv8DQEm7Hn3Cl9JaNVVZMr0ygTHkAsT28dVwHs2oxVi3kkYj5DQg00d9dMutjH'
-
 class CheckoutController < ApplicationController
   before_action :require_items
   

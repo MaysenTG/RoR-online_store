@@ -1,4 +1,4 @@
-<div class="card" style="height: 100%;">
+<div class="card" style="min-height: 100%;">
   <a id="anchor-img" href="/products/<%= product.id %>">
     <% if product.image.attached? %>
       <%= image_tag product.image, style: "max-height: 15rem", class: "image-fluid card-img-top"%>
@@ -54,7 +54,7 @@
         btn.nextElementSibling.setAttribute("hidden", "true");
         btn.removeAttribute("hidden");
         btn.value = '<%= t("products.added_to_cart") %>';
-        
+
         document.getElementById("cart-items-count").innerText = cart_data["info"]["total_items"]
 
         setTimeout(() => {
