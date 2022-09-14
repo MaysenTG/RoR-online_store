@@ -1,4 +1,4 @@
-if(window.location.pathname === "/checkout/payment") {
+if(window.location.pathname == "/checkout/payment") {
   // This is a public sample test API key.
   // Don’t submit any personally identifiable information in requests made with this key.
   // Sign in to see your own test API key embedded in code samples.
@@ -14,6 +14,9 @@ if(window.location.pathname === "/checkout/payment") {
   const items = cart_data["items"];
 
   let elements;
+  
+  initialize();
+  checkStatus();
 
   document
     .querySelector("#payment-form")
