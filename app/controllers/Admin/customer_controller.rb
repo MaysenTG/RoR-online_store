@@ -3,7 +3,6 @@ module Admin
     
     def show
       @customer = Stripe::Customer.retrieve(params[:customer_id])
-      puts @customer
       @orders = Stripe::Charge.list({customer: params[:customer_id]})
       @order_data = @orders["data"].as_json
     end
