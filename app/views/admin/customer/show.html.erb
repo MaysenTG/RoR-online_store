@@ -1,0 +1,126 @@
+<section class="h-100 gradient-custom-2">
+  <div class="d-flex">
+    <a href="/admin/customers"><i class="fs-2 bi bi-arrow-left-square"></i></a>
+  </div>
+  <div class="d-none alert alert-dark mt-3" id="save-banner" style="height: 80px; display: block;" role="alert">
+    <span id="form-title">Unsaved changes
+      <div class="float-end d-flex justify-content-end">
+        <a href="#" onClick="window.location.reload()" class="btn btn-secondary align-self-center">Discard</a>&nbsp;
+        <input type="submit" form="edit-customer-form" class="btn btn-primary align-self-center" value="Save">
+      </div>
+    </span>
+  </div>
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-top h-100">
+      <div class="col col-lg-9 col-xl-7">
+        <div class="card">
+          <div class="rounded-top text-white d-flex flex-row" style="background-color: #000; height:200px;">
+            <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
+              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
+                alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
+                style="width: 150px; z-index: 1">
+            </div>
+            <div class="ms-3" style="margin-top: 130px;">
+              <h5><%= @customer.name %></h5>
+              <p>New York</p>
+            </div>
+          </div>
+          <div class="p-4 text-black" style="background-color: #f8f9fa;">
+          </div>
+          <div class="card-body p-4 text-black">
+            <div class="mb-5">
+              <p class="lead fw-normal mb-1">Orders</p>
+              <table class="table table-hover" id="product-table">
+                <thead>
+                  <th scope="col">Order ID</th>
+                  <th scope="col">Order total</th>
+                  <th scope="col">Time ordered</th>
+                </thead>
+                <tbody>
+                  <% @order_data.each do |o| %>
+                    <tr data-href="/admin/orders/<%= o["id"] %>">
+                      <td scope="row"><%= o["id"] %></td>
+                      <td scope="row"><%= number_to_currency(o["amount"] / 100) %></td>
+                      <td scope="row"><%= time_ago_in_words(Time.at(o["created"]).to_datetime) %> ago</td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <div class="row g-2">
+                <div class="col">
+                  Customer created <%= time_ago_in_words(Time.at(@customer["created"]).to_datetime) %> ago
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col col-lg-3 col-xl-5">
+        <div class="card">
+          <div class="rounded-top text-white d-flex flex-row" style="background-color: #000; height:200px;">
+            <div class="ms-3" style="margin-top: 130px;">
+              <h5>Edit customer information</h5>
+            </div>
+          </div>
+          <div class="p-4">
+            <form method="PUT" id="edit-customer-form" action="/admin/customers/edit_customer">
+              <input type="hidden" name="customer_id" value="<%= @customer["id"] %>">
+              <h6>Customer information</h6>
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" name="customer[info][name]" value="<%= @customer["name"] %>" id="floatingInput" placeholder="John Smith">
+                <label for="floatingInput">Name: </label>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="email" class="form-control" name="customer[info][email]" value="<%= @customer["email"] %>" id="floatingPassword" placeholder="Email">
+                <label for="floatingPassword">Email: </label>
+              </div>
+              <div class="form-floating mb-5">
+                <textarea class="form-control" name="customer[info][description]" id="floatingPassword" placeholder="Description"><%= @customer["description"] %></textarea>
+                <label for="floatingPassword">Description: </label>
+              </div>
+              <h6>Shipping Address</h6>
+              <div class="form-floating">
+                <input type="text" class="form-control mb-3" value="<%= @customer["address"]["line1"] %>" name="customer[address][line1]" id="floatingPassword" placeholder="123 Testing street">
+                <label for="floatingPassword">Address 1: </label>
+              </div>
+              <div class="form-floating">
+                <input type="text" class="form-control mb-3" value="<%= @customer["address"]["line2"] %>" name="customer[address][line2]" id="floatingPassword" placeholder="123 Testing street">
+                <label for="floatingPassword">Address 2 (optional): </label>
+              </div>
+              <div class="form-floating">
+                <input type="text" class="form-control mb-3" value="<%= @customer["address"]["city"] %>" name="customer[address][city]" id="floatingPassword" placeholder="Cambridge">
+                <label for="floatingPassword">City: </label>
+              </div>
+              <div class="form-floating">
+                <input type="text" class="form-control mb-3" value="<%= @customer["address"]["country"] %>" name="customer[address][country]" id="floatingPassword" placeholder="New Zealand">
+                <label for="floatingPassword">Country: </label>
+              </div>
+              <div class="form-floating">
+                <input type="text" class="form-control mb-3" value="<%= @customer["address"]["state"] %>" name="customer[address][state]" id="floatingPassword" placeholder="Waikato">
+                <label for="floatingPassword">State: </label>
+              </div>
+              <div class="form-floating">
+                <input type="text" class="form-control mb-3" value="<%= @customer["address"]["postal_code"] %>" name="customer[address][postal_code]" id="floatingPassword" placeholder="1234">
+                <label for="floatingPassword">Postal/zip code: </label>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  let inputs = document.querySelectorAll('input, textarea');
+   for (let i = 0; i < inputs.length; i++) {
+     inputs[i].addEventListener('input', function() {
+       showSaveButton();
+     });
+   }
+    function showSaveButton() {
+      let saveButton = document.querySelector('#save-banner');
+      saveButton.classList.remove('d-none');
+    }
+</script>

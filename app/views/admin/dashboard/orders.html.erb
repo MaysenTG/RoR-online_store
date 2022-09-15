@@ -11,14 +11,18 @@
       <th scope="col">Order ID</th>
       <th scope="col">Customer</th>
       <th scope="col">Order total</th>
+      <th scope="col">Time ordered</th>
     </thead>
     <tbody>
       <% @orders.each do |o| %>
-        <tr data-href="/admin/orders/<%= o.id %>">
-          <td scope="row"><%= o.id %></td>
-          <td scope="row"><%= o.customer %></td>
-          <td scope="row"><%= o.amount %></td>
-        </tr>
+        <% if o.customer %>
+          <tr data-href="/admin/orders/<%= o.id %>">
+            <td scope="row"><%= o.id %></td>
+            <td scope="row"><% if o.customer %><%= Stripe::Customer.retrieve(o.customer)["name"] %><% else %>No customer<% end %></td>
+            <td scope="row"><%= number_to_currency(o.amount / 100) %></td>
+            <td scope="row"><%= time_ago_in_words(Time.at(o.created).to_datetime) %> ago</td>
+          </tr>
+        <% end %>
       <% end %>
     </tbody>
   </table>

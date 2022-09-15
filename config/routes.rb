@@ -25,7 +25,8 @@ Rails.application.routes.draw do
     get '/orders' => 'dashboard#orders'
     get '/orders/:order_id' => 'order#show'
     get '/customers' => 'customer#all'
-    get '/customers/:customer_id' => 'customer#show'
+    get '/customers/:customer_id/edit' => 'customer#show'
+    put '/customers/edit_customer' => 'customer#edit_customer'
   end
   
   get '/products' => "shops#index"

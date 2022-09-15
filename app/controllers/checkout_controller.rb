@@ -90,7 +90,7 @@ class CheckoutController < ApplicationController
   # An endpoint to start the payment process
   def create_payment_intent
     data = JSON.parse(session["cart_contents"]["items"].to_json)
-    
+    @cart_total_cost = session["cart_contents"]["info"]["subtotal"]
     # # Loop through the cart contents and add all the items ID and quantity to an array
     items = []
     data.each do |item|
@@ -107,7 +107,7 @@ class CheckoutController < ApplicationController
     #data = JSON.parse(request.body.read)
     # Create a PaymentIntent with amount and currency
     payment_intent = Stripe::PaymentIntent.create(
-      amount: sub_total_in_cart.to_i * 100,
+      amount: @cart_total_cost.to_i * 100,
       currency: 'usd',
       automatic_payment_methods: {
         enabled: true,

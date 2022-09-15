@@ -10,12 +10,16 @@
     <thead>
       <th scope="col">Customer ID</th>
       <th scope="col">Name</th>
+      <th scope="col">Created</th>
+      <th scope="col">Number of orders</th>
     </thead>
     <tbody>
       <% @customer_data.each do |o| %>
-        <tr data-href="/admin/customers/<%= o.id %>">
+        <tr data-href="/admin/customers/<%= o.id %>/edit">
           <td scope="row"><%= o.id %></td>
           <td scope="row"><%= o.name %></td>
+          <td scope="row"><%= time_ago_in_words(Time.at(o.created).to_datetime) %> ago</td>
+          <td scope="row"><%= Stripe::Charge.list({customer: o.id })["data"].as_json.length %></td>
         </tr>
       <% end %>
     </tbody>

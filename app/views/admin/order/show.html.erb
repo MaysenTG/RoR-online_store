@@ -34,8 +34,8 @@
                     <tr data-href="/admin/products/<%= product['id'] %>/edit">
                       <td><%= product["title"] %></td>
                       <td><%= product["quantity"] %></td>
-                      <td><%= product["price"] %></td>
-                      <td><%= product["total_price"] %></td>
+                      <td><%= number_to_currency(product["price"]) %></td>
+                      <td><%= number_to_currency(product["total_price"]) %></td>
                     </tr>
                   <% end %>
                 </tbody>
@@ -61,11 +61,11 @@
                 <tbody>
                   <tr>
                     <td>Grand Total: </td>
-                    <td><%= number_to_currency(sub_total_in_cart) %></td>
+                    <td><%= number_to_currency(@total_order_cost) %></td>
                   </tr>
                   <tr>
                     <th>Total: </th>
-                    <td><%= number_to_currency(sub_total_in_cart) %></td>
+                    <td><%= number_to_currency(@total_order_cost) %></td>
                   </tr>
                 </tbody>
               </table>
