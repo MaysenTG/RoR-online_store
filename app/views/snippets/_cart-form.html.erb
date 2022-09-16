@@ -1,0 +1,46 @@
+<script>
+  document.querySelectorAll("button.add-to-cart").forEach(btn => {
+        btn.addEventListener("click", async function(e) {
+          let product_form = btn.closest("form")
+          let add_to_cart_span = this.querySelector('span.add-to-cart-text')
+          let added_to_cart_span = this.querySelector('span.added-to-cart-text')
+          this.disabled = true
+          
+          this.querySelector('div.btn-loader').removeAttribute("hidden");
+          add_to_cart_span.classList.add("d-none")
+          
+
+          e.preventDefault();
+
+          let formProductInfo = {
+            product_id: product_form.product_id.value,
+            quantity: product_form.quantity.value
+          }
+
+          const response = await fetch('/cart/add', {
+            method: 'POST',
+            body: JSON.stringify(formProductInfo),
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            }
+          })
+          let data = await response.json();
+
+          const cart_response = await fetch('/cart')
+          let cart_data = await cart_response.json()
+
+          this.querySelector('div.btn-loader').setAttribute("hidden", "true");
+          btn.removeAttribute("hidden");
+          added_to_cart_span.classList.remove("d-none");
+
+          document.getElementById("cart-items-count").innerText = cart_data["info"]["total_items"]
+
+          setTimeout(() => {
+            added_to_cart_span.classList.add("d-none");
+            add_to_cart_span.classList.remove("d-none");
+            btn.disabled = false;
+          }, 2000)
+        })
+    });
+</script>

@@ -30,19 +30,9 @@
             </span></div>
           <div class="product_description"><%= @shop.description %></div>
           <hr class="singleline">
-          <div class="row">
-            <div class="col-xs-6">
-              <span class="d-flex">
-                <form id="add-to-cart-form" class="w-100" method="post" data-remote="true" data-turbo="false">
-                  <input type="button" name="commit" value="<%= I18n.t 'products.add_to_cart' %>" class="btn btn-primary add-to-cart-btn w-100" data-disable-with="Add to cart">
-                  <button class="btn btn-primary add-to-cart-loading" hidden type="button" disabled style="width: 100%;">
-                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                    <span class="sr-only"><%= I18n.t 'products.adding_to_cart' %></span>
-                  </button>
-                  <input value="1" min="1" class="form-control" type="number" name="quantity" id="product_quantity">
-                  <input value="<%= @shop.id %>" autocomplete="off" type="hidden" name="product_id" id="product_id">
-                </form>
-              </div>
+          <div class="col col-12">
+            <span class="d-flex">
+              <%= render partial: 'snippets/product-form', locals: { product: @shop } %>
             </div>
           </div>
         </div>
@@ -50,53 +40,3 @@
     </div>
   </div>
 </div>
-<script>
-  document.querySelectorAll(".add-to-cart-btn").forEach(btn => {
-
-      btn.addEventListener("click", async function(e) {
-        btn.disabled = true;
-        btn.nextElementSibling.removeAttribute("hidden");
-        btn.setAttribute("hidden", "true");
-
-        e.preventDefault();
-
-        let formProductInfo = {
-          product_id: e.target.parentElement.product_id.value,
-          quantity: e.target.parentElement.quantity.value
-        }
-
-        const response = await fetch('/cart/add', {
-          method: 'POST',
-          body: JSON.stringify(formProductInfo),
-          headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-          }
-        })
-
-        let data = await response.json();
-        let currentText = btn.value
-        btn.value = "✓";
-        btn.nextElementSibling.setAttribute("hidden", "true");
-        btn.removeAttribute("hidden");
-
-        setTimeout(() => {
-          btn.value = currentText
-          btn.disabled = false;
-        }, 2000)
-
-        //#cart-items-count
-        const cart_response = await fetch('/cart')
-        let cart_data = await cart_response.json()
-
-        let total_items = 0
-        for(item in cart_data["items"]) {
-          if(cart_data["items"][item]["quantity"]) {
-            total_items += parseInt(cart_data["items"][item]["quantity"])
-          }
-        }
-
-        document.getElementById("cart-items-count").innerText = total_items
-      })
-  })
-</script>

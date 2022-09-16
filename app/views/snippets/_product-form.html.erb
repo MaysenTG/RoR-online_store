@@ -1,0 +1,21 @@
+<form id="add-to-cart-form" method="post" data-remote="true" data-turbo="false">
+  <div class="row">
+    <div class="col col-lg-4">
+      <input value="1" min="1" class="form-control" type="number" name="quantity" id="product_quantity">
+    </div>
+    <div class="col col-lg-8">
+      <button name="commit" style="min-width: 10rem" class="w-100 btn btn-primary add-to-cart" type="button">
+      
+        <span class="add-to-cart-text"><%= I18n.t 'products.add_to_cart' %></span>
+        <span class="d-none added-to-cart-text"><%= I18n.t 'products.added_to_cart' %></span>
+        
+        <div hidden class="btn-loader">
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          <span class="sr-only"><%= I18n.t 'products.adding_to_cart' %></span>
+        </div>
+      </button>
+    </div>
+  </div>
+  <input value="<%= product.id %>" autocomplete="off" type="hidden" name="product_id" id="product_id">
+</form>
+<%= render partial: 'snippets/cart-form' %>

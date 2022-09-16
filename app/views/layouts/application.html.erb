@@ -62,7 +62,9 @@
 
       jQuery(document).ready(function($) {
           $("tr").click(function() {
-            window.location = $(this).data("href");
+            if($(this).data("href") != null) {
+              window.location = $(this).data("href");
+            } 
           });
       });
     </script>

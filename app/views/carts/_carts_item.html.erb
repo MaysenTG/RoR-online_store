@@ -1,202 +1,218 @@
-<section class="h-100 h-custom" style="background-color: #d2c9ff;">
-  <div class="container py-5 h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-12">
-        <div class="card card-registration card-registration-2" style="border-radius: 15px;">
-          <div class="card-body p-0">
-            <div class="row g-0">
-              <div class="col-lg-8">
-                <div class="p-5">
-                  <div class="d-flex justify-content-between align-items-center mb-5">
-                    <a href="/"><i style="font-size: 3rem;" class="bi bi-arrow-left-square"></i></a>
-                    <h1 class="fw-bold mb-0 text-black">Shopping Cart</h1>
-                    <h6 class="mb-0 text-muted"><span id="num-items-in-cart"><%= total_items_in_cart %></span> items</h6>
-                  </div>
-                  <hr class="my-4">
-                  <% @cart_items.each do |item| %>
-                    <div class="row mb-4 d-flex justify-content-between align-items-center">
-                      <div class="col-md-2 col-lg-2 col-xl-2">
-                        <% if Product.find(item["id"]).image.attached? %>
-                          <%= image_tag Product.find(item["id"]).image, class: "img-fluid rounded-3" %>
-                        <% else %>
-                          <img
-                            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img5.webp"
-                            class="img-fluid rounded-3" alt="Cotton T-shirt"
-                          />
-                        <% end %>
-                      </div>
-                      <div class="col-md-3 col-lg-3 col-xl-3">
-                        <h6 class="text-muted"><%= item["title"] %></h6>
-                      </div>
-                      <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                        <span hidden data-individual-price-per-product="<%= item["id"] %>"><%= item["price"] %></span>
-                        <form id="update-product-cart-form" method="post">
-                          <input type="hidden" value="<%= item["id"] %>" name="product_id">
-                          <span class="d-flex">
-                            <input style="width: 5rem;" value="<%= item["quantity"] %>" min="1" class="form-control" type="number" name="quantity" id="product_quantity">
-                            &nbsp;
-                            <button type="button" class="update-product-cart-button btn btn-secondary">Update</button>
-                            <button hidden class="btn btn-secondary update-cart-loading" type="button" disabled style="width: 100%;">
-                              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                            </button>
-                          </span>
-                        </form>
-                      </div>
-                      <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                        <h6 data-total-price-product="<%= item["id"] %>" class="mb-0">$<%= (item["quantity"].to_i * item["price"].to_i) %></h6>
-                      </div>
-                      <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                        <form id="delete-product-cart-form" method="delete">
-                          <input type="hidden" value="<%= item["id"] %>" name="product_id">
-                          <input value="<%= item["quantity"] %>" min="1" class="form-control" type="hidden" name="quantity" id="product_quantity">
-                          <span class="d-flex">
-                            <button type="button" class="remove-product-from-cart btn btn-danger">X</button>
-                            <button hidden class="btn btn-danger remove-from-cart-loading" type="button" disabled style="width: 100%;">
-                              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                            </button>
-                          </span>
-                        </form>
-                      </div>
-                    </div>
-                    <hr class="my-4">
-                  <% end %>
-                  <div class="pt-5">
-                    <h4 class="mb-0 text-center"><a href="/" class="text-body">Back to shop</a></h4>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-4 bg-grey">
-                <div class="p-5">
-                  <h3 class="fw-bold mb-5 mt-2 pt-1">Summary</h3>
-                  <hr class="my-4">
-                  <div class="d-flex justify-content-between mb-4">
-                    <h5 class="text-uppercase">Total items: <span id="total-num-items"><%= total_items_in_cart %></span></h5>
-                    <h5 id="sub-total-of-items">$<%= sub_total_in_cart %></h5>
-                  </div>
-                  <h5 class="text-uppercase mb-3">Shipping</h5>
-                  <div class="mb-4 pb-2">
-                    <select id="shipping-select" class="select">
-                      <option value="0" selected>Select shipping</option>
-                      <option value="5">Standard-Delivery - $5</option>
-                      <option value="15">Express - $15</option>
-                    </select>
-                  </div>
-                  <h5 class="text-uppercase mb-3">Discount code</h5>
-                  <div class="mb-5">
-                    <div class="form-outline">
-                      <div class="d-flex">
-                        <input type="text" id="form3Examplea2" class="form-control form-control-lg">
-                        <button class="btn btn-secondary w-100">Apply</button>
-                      </div>
-                      <label class="form-label" for="form3Examplea2">Enter your code</label>
+<section class="w-100">
+  <div style="padding: 0 5rem;" class="w-100 row d-flex align-items-center h-100">
+    <div class="col col-lg-8 col-sm-12">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col" class="h5">Shopping Bag</th>
+              <th scope="col">Price</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Total price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @cart_items.each do |item| %>
+              <tr>
+                <th scope="row">
+                  <div class="d-flex align-items-center">
+                    <% if item["image_url"] %>
+                      <img src="<%= request.base_url %>/<%= item["image_url"] %>" style="width: 120px;"  class="img-fluid rounded-3" alt="...">
+                    <% else %>
+                      <img src="https://dummyimage.com/100/fff/0011ff.png&text=Image+Not+Found" style="width: 120px;"  class="img-fluid rounded-3" alt="...">
+                    <% end %>
+                    <div class="flex-column ms-4">
+                      <p class="mb-2"><%= item["title"] %></p>
+                      <p class="mb-0">Daniel Kahneman</p>
                     </div>
                   </div>
-                  <hr class="my-4">
-                  <div class="d-flex justify-content-between mb-5">
-                    <h5 class="text-uppercase">Total price</h5>
-                    <h5><span id="total-price-before-shipping">$<%= sub_total_in_cart %></span></h5>
+                </th>
+                <td class="align-middle">
+                  <p data-individual-price-per-product="<%= item["id"] %>" class="mb-0" style="font-weight: 500;"><%= item["price"] %></p>
+                </td>
+                <td class="align-middle">
+                  <form id="product_form-<%= item["id"] %>" action="/admin/cart/update" method="PUT">
+                    <input type="hidden" value="<%= item["id"] %>" name="product_id">
+                    <div class="d-flex flex-row align-items-center">
+                      <button class="update-quantity-btn btn btn-link px-2"
+                      onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                        <i class="bi bi-dash"></i>
+                      </button>
+                      <div class="d-none spinner-border spinner-border-sm text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                      </div>
+                      <input min="0" name="quantity" value="<%= item["quantity"] %>" type="number"
+                      class="product_quantity form-control form-control-sm" style="width: 50px;" />
+                      <button class="update-quantity-btn btn btn-link px-2"
+                      onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                        <i class="bi bi-plus"></i>
+                      </button>
+                    </div>
+                  </form>
+                </td>
+                <td class="align-middle">
+                  <p data-total-price-product="<%= item["id"] %>" class="mb-0" style="font-weight: 500;"><%= number_to_currency(item["quantity"].to_i * item["price"].to_i) %></p>
+                </td>
+                <td class="align-middle">
+                  <form id="delete-product-cart-form" method="delete">
+                    <input type="hidden" value="<%= item["id"] %>" name="product_id">
+                    <input value="<%= item["quantity"] %>" min="1" class="form-control" type="hidden" name="quantity" id="product_quantity">
+                    <span class="d-flex">
+                      <button type="button" class="remove-product-from-cart btn btn-danger">X</button>
+                      <button hidden class="btn btn-danger remove-from-cart-loading" type="button" disabled style="width: 100%;">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                      </button>
+                    </span>
+                  </form>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col col-lg-4 col-sm-12 bg-grey mt-5">
+      <div class="table-responsive mt-5">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col" class="h5">Summary</th>
+            </tr>
+          </thead>
+          <tbody>
+            <td>
+              <div class="d-flex justify-content-between mb-4">
+                <h5 class="text-uppercase">Total items: <span id="total-num-items"><%= total_items_in_cart %></span></h5>
+                <h5 id="sub-total-of-items">$<%= sub_total_in_cart %></h5>
+              </div>
+              <h5 class="text-uppercase mb-3">Shipping</h5>
+              <div class="mb-4 pb-2">
+                <select id="shipping-select" class="select">
+                  <option value="0" selected>Select shipping</option>
+                  <option value="5">Standard-Delivery - $5</option>
+                  <option value="15">Express - $15</option>
+                </select>
+              </div>
+              <h5 class="text-uppercase mb-3">Discount code</h5>
+              <div class="mb-5">
+                <div class="form-outline">
+                  <div class="d-flex">
+                    <input type="text" id="form3Examplea2" class="form-control form-control-lg">
+                    <button class="btn btn-secondary w-100">Apply</button>
                   </div>
-                  <a href="/checkout" <% if total_items_in_cart == 0 %>disabled<% end %> class="w-100 btn btn-dark btn-block btn-lg" data-mdb-ripple-color="dark">Checkout</a>
+                  <label class="form-label" for="form3Examplea2">Enter your code</label>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
+              <hr class="my-4">
+              <div class="d-flex justify-content-between mb-5">
+                <h5 class="text-uppercase">Total price</h5>
+                <h5><span id="total-price-before-shipping">$<%= sub_total_in_cart %></span></h5>
+              </div>
+              <a href="/checkout" <% if total_items_in_cart == 0 %>disabled<% end %> class="w-100 btn btn-dark btn-block btn-lg" data-mdb-ripple-color="dark">Checkout</a>
+            </td>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
 </section>
+<br/>
+<br/>
+<br/>
 <script>
-  document.getElementById("shipping-select").addEventListener("change", async function(e) {
-    const cart_response = await fetch('/cart')
-    let cart_data = await cart_response.json()
-    document.getElementById("total-price-before-shipping").innerText = "$"+(parseInt(cart_data["info"]["subtotal"]) + parseInt(e.target.value));
-  });
+  document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("shipping-select").addEventListener("change", async function(e) {
+      const cart_response = await fetch('/cart')
+      let cart_data = await cart_response.json()
+      document.getElementById("total-price-before-shipping").innerText = "$"+(parseInt(cart_data["info"]["subtotal"]) + parseInt(e.target.value));
+    });
 
-  document.querySelectorAll(".update-product-cart-button").forEach(btn => {
-      btn.addEventListener("click", async function(e) {
-        btn.disabled = true;
-        btn.nextElementSibling.removeAttribute("hidden");
-        btn.setAttribute("hidden", "true");
+    document.querySelectorAll("input.product_quantity, button.update-quantity-btn").forEach(btn => {
+        btn.addEventListener("click", async function(e) {
+          console.log("AHHH")
+          let product_form = this.closest("form")
+          e.preventDefault();
+          product_form.querySelector("div.spinner-border").classList.remove("d-none")
+          product_form.querySelector("input[name=quantity]").classList.add("d-none")
 
-        e.preventDefault();
+          let formProductInfo = {
+            product_id: product_form.product_id.value,
+            quantity: product_form.quantity.value
+          }
 
-        let formProductInfo = {
-          product_id: e.target.parentElement.parentElement.product_id.value,
-          quantity: e.target.parentElement.parentElement.quantity.value
-        }
+          const response = await fetch('/cart/update', {
+            method: 'PUT',
+            body: JSON.stringify(formProductInfo),
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            }
+          })
 
-        const response = await fetch('/cart/update', {
-          method: 'PUT',
-          body: JSON.stringify(formProductInfo),
-          headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
+          let data = await response.json();
+          let new_total = parseInt(document.querySelector("[data-individual-price-per-product='"+product_form.product_id.value+"']").innerText) * product_form.quantity.value
+          document.querySelector("[data-total-price-product='"+product_form.product_id.value+"']").innerText = "$"+new_total
+
+          //#cart-items-count
+          const cart_response = await fetch('/cart')
+          let cart_data = await cart_response.json()
+
+          let total_items = 0
+          for(item in cart_data["items"]) {
+            if(cart_data["items"][item]["quantity"]) {
+              total_items += parseInt(cart_data["items"][item]["quantity"])
+            }
+          }
+
+          document.getElementById("total-num-items").innerText = cart_data["info"]["total_items"]
+          //document.getElementById("num-items-in-cart").innerText = cart_data["info"]["total_items"]
+          document.getElementById("sub-total-of-items").innerText = "$"+cart_data["info"]["subtotal"]
+          document.getElementById("total-price-before-shipping").innerText = "$"+cart_data["info"]["subtotal"]
+          document.getElementById("cart-items-count").innerText = cart_data["info"]["total_items"]
+
+          product_form.querySelector("div.spinner-border").classList.add("d-none")
+          product_form.querySelector("input[name=quantity]").classList.remove("d-none")
+
+          if(product_form.quantity.value == 0) {
+            window.location.reload();
           }
         })
-
-        let data = await response.json();
-
-        let new_total = parseInt(document.querySelector("[data-individual-price-per-product='"+e.target.parentElement.parentElement.product_id.value+"']").innerText) * e.target.parentElement.parentElement.quantity.value
-
-        document.querySelector("[data-total-price-product='"+e.target.parentElement.parentElement.product_id.value+"']").innerText = "$"+new_total
-
-        //#cart-items-count
-        const cart_response = await fetch('/cart')
-        let cart_data = await cart_response.json()
-
-        let total_items = 0
-        for(item in cart_data["items"]) {
-          if(cart_data["items"][item]["quantity"]) {
-            total_items += parseInt(cart_data["items"][item]["quantity"])
-          }
-        }
-
-        document.getElementById("total-num-items").innerText = cart_data["info"]["total_items"]
-        document.getElementById("num-items-in-cart").innerText = cart_data["info"]["total_items"]
-        document.getElementById("sub-total-of-items").innerText = "$"+cart_data["info"]["subtotal"]
-        document.getElementById("total-price-before-shipping").innerText = "$"+cart_data["info"]["subtotal"]
-        document.getElementById("cart-items-count").innerText = cart_data["info"]["total_items"]
-        
-        btn.disabled = false;
-        btn.nextElementSibling.setAttribute("hidden", "true");
-        btn.removeAttribute("hidden");
       })
-    })
 
-    document.querySelectorAll(".remove-product-from-cart").forEach(btn => {
+      document.querySelectorAll(".remove-product-from-cart").forEach(btn => {
 
-      btn.addEventListener("click", async function(e) {
-        //btn.disabled = true;
-        //btn.nextElementSibling.removeAttribute("hidden");
-        //btn.setAttribute("hidden", "true");
-        
-        btn.nextElementSibling.removeAttribute("hidden");
-        btn.setAttribute("hidden", "true");
+        btn.addEventListener("click", async function(e) {
+          //btn.disabled = true;
+          //btn.nextElementSibling.removeAttribute("hidden");
+          //btn.setAttribute("hidden", "true");
 
-        e.preventDefault();
+          btn.nextElementSibling.removeAttribute("hidden");
+          btn.setAttribute("hidden", "true");
 
-        let formProductInfo = {
-          product_id: e.target.parentElement.parentElement.product_id.value,
-          quantity: e.target.parentElement.parentElement.quantity.value
-        }
+          e.preventDefault();
 
-        const response = await fetch('/cart/delete', {
-          method: 'DELETE',
-          body: JSON.stringify(formProductInfo),
-          headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
+          let formProductInfo = {
+            product_id: e.target.parentElement.parentElement.product_id.value,
+            quantity: e.target.parentElement.parentElement.quantity.value
           }
+
+          const response = await fetch('/cart/delete', {
+            method: 'DELETE',
+            body: JSON.stringify(formProductInfo),
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            }
+          })
+
+          let data = await response.json();
+
+          window.location.reload()
+
+          //btn.disabled = false;
+          //btn.nextElementSibling.setAttribute("hidden", "true");
+          //btn.removeAttribute("hidden");
         })
-
-        let data = await response.json();
-
-        window.location.reload()
-
-        //btn.disabled = false;
-        //btn.nextElementSibling.setAttribute("hidden", "true");
-        //btn.removeAttribute("hidden");
       })
-    })
+  })
 </script>

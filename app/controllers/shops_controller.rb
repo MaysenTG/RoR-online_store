@@ -4,7 +4,7 @@ class ShopsController < ApplicationController
   end
   
   def index
-    @products = Product.all.with_attached_image
+    @products = Product.all.with_attached_image.includes([:category])
     @order_item = current_order.order_items.new
     @total_cart = total_items_in_cart
   end

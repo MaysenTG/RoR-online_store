@@ -1,32 +1,38 @@
-<div class="card" style="min-height: 100%;">
-  <a id="anchor-img" href="/products/<%= product.id %>">
-    <% if product.image.attached? %>
-      <%= image_tag product.image, style: "max-height: 15rem", class: "image-fluid card-img-top"%>
-    <% else %>
-      <img src="https://dummyimage.com/100/fff/0011ff.png&text=Image+Not+Found" style="height: 15rem;" class="card-img-top image-fluid" alt="...">
-    <% end %>
+<div style="min-height: 200px;" class="col-md-6 col-lg-4 col-sm-6 mb-4 mb-lg-0">
+  <div style="min-height: 200px;" class="card">
+    <a href="/products/<%= product.id %>">
+      <% if product.image.attached? %>
+        <%= image_tag product.image, class: "card-img-top"%>
+      <% else %>
+        <img src="https://dummyimage.com/100/fff/0011ff.png&text=Image+Not+Found" class="card-img-top" alt="...">
+      <% end %>
+    </a>
     <div class="card-body">
-      <h5 class="card-title"><%= product.title %></h5>
-      <p class="card-text"><%= product.description %></p>
-      $<%= product.price %>
+      <div class="d-flex justify-content-between">
+        <p class="small"><a href="/collections/<%= product.category.id %>" class="text-muted"><%= product.category.category %></a></p>
+      </div>
+      <div class="d-flex justify-content-between mb-3">
+        <h5 class="mb-0"><%= product.title %></h5>
+        <h5 class="text-dark mb-0">$<%= product.price %></h5>
+      </div>
+      <div class="d-flex justify-content-between mb-2">
+        <div class="ms-auto text-warning">
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star"></i>
+        </div>
+        <%= render partial: 'snippets/product-form', locals: { product: product } %>
+      </div>
     </div>
-  </a>
-  <div class="card-footer">
-    <form id="add-to-cart-form" method="post" data-remote="true" data-turbo="false">
-      <input type="button" name="commit" value="<%= I18n.t 'products.add_to_cart' %>" class="btn btn-primary add-to-cart-btn" style="width: 100%;" data-disable-with="Add to cart">
-      <button class="btn btn-primary add-to-cart-loading" hidden type="button" disabled style="width: 100%;">
-        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-        <span class="sr-only"><%= I18n.t 'products.adding_to_cart' %></span>
-      </button>
-      <input value="1" min="1" class="form-control" type="number" name="quantity" id="product_quantity">
-      <input value="<%= product.id %>" autocomplete="off" type="hidden" name="product_id" id="product_id">
-    </form>
   </div>
 </div>
 <script>
   document.querySelectorAll(".add-to-cart-btn").forEach(btn => {
       btn.addEventListener("click", async function(e) {
         btn.disabled = true;
+        console.log(btn.closest("form"));
         btn.nextElementSibling.removeAttribute("hidden");
         btn.setAttribute("hidden", "true");
 
