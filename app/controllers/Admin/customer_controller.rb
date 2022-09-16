@@ -1,5 +1,6 @@
 module Admin
   class CustomerController < ApplicationController
+    before_action :check_admin, only: %i[ edit_customer ]
     
     def show
       @customer = Stripe::Customer.retrieve(params[:customer_id])
@@ -8,7 +9,7 @@ module Admin
     end
     
     def all
-      @customers = Stripe::Customer.list({limit: 3})
+      @customers = Stripe::Customer.list()
       @customer_data = @customers["data"]
     end
     
@@ -31,6 +32,12 @@ module Admin
       )
       
       redirect_to "/admin/customers/#{params[:customer_id]}/edit"
+    end
+    
+    def check_admin
+      unless current_user.role == "admin"
+        redirect_to admin_customer_url
+      end
     end
   end
 end

@@ -2,6 +2,7 @@ module Admin
   class ProductsController < ApplicationController
     before_action :set_product, only: %i[ show edit update destroy ]
     before_action :authenticate_user!
+    before_action :check_admin, only: %i[ new create update destroy ]
 
     # GET /products or /products.json
     def index
@@ -68,6 +69,12 @@ module Admin
       # Only allow a list of trusted parameters through.
       def product_params
         params.require(:product).permit(:title, :description, :price, :image, :category_id)
+      end
+      
+      def check_admin
+        unless current_user.role == "admin"
+          redirect_to admin_products_url, notice: "You are not authorized to edit/create/delete products"
+        end
       end
   end
 end

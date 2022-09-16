@@ -2,6 +2,7 @@ module Admin
   class CategoriesController < ApplicationController
     before_action :set_category, only: %i[ show edit update destroy ]
     before_action :authenticate_user!
+    before_action :check_admin, only: %i[ new create update destroy ]
 
     # GET /categories or /categories.json
     def index
@@ -60,6 +61,11 @@ module Admin
     end
 
     private
+      def check_admin
+        unless current_user.role == "admin"
+          redirect_to admin_categories_url, notice: "You are not authorized to edit/create/delete categories"
+        end
+      end
       # Use callbacks to share common setup or constraints between actions.
       def set_category
         @category = Category.find(params[:id])

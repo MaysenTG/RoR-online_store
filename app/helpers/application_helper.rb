@@ -1,4 +1,11 @@
 module ApplicationHelper
+    def account_roles
+        [
+            {name: "Admin", value: "admin"},
+            {name: "Customer", value: "customer"},
+            {name: "Guest", value: "guest"},
+        ]
+    end
 
     def current_order
         if session[:order_id].nil?

@@ -1,0 +1,18 @@
+<div class="container">
+  <h1>Accounts</h1>
+  <div class="list-group mt-3">
+    <h4>Currently logged in as:</h4>
+    <a href="/admin/account/<%= @currently_logged_in.id %>" class="list-group-item list-group-item-action active" aria-current="true">
+      <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1"><%= @currently_logged_in.name %></h5>
+      </div>
+      <p class="mb-1">Email: <%= @currently_logged_in.email %></p>
+    </a>
+  </div>
+  <div class="list-group mt-5">
+    <h4>Other accounts:</h4>
+    <% @other_accounts.each do |account| %>
+      <a href="/admin/account/<%= account.id %>" class="list-group-item list-group-item-action <% if account.id == current_user.id %>active<% end %>"><%= account.name %></a>
+    <% end %>
+  </div>
+</div>

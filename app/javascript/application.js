@@ -2,6 +2,7 @@
 import "@hotwired/turbo-rails";
 import "controllers";
 import "checkout/main"
+import "dashboard/main"
 
 //= require rails-ujs
 //= require activestorage

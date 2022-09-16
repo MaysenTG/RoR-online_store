@@ -1,0 +1,52 @@
+<div class="container rounded bg-white mt-5 mb-5">
+  <% if notice %>
+    <div class="alert <% if notice.include?("not authorized") %> alert-danger <% else %> alert-success <% end %> alert-dismissible fade show" role="alert">
+      <%= notice %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% end %>
+  <div class="d-flex">
+    <a href="/admin/accounts"><i class="fs-2 bi bi-arrow-left-square"></i></a>
+  </div>
+  <div class="row">
+    <div class="col-md-3 border-right">
+      <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span class="font-weight-bold"><%= @account.name  %></span><span class="text-black-50"><%= @account.email  %></span><span class="text-black-50">Role: <%= @account.role  %></span></div>
+    </div>
+    <div class="col-md-9 border-right">
+      <div class="p-3 py-5">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h4 class="text-right">Profile Settings</h4>
+        </div>
+        <form method="put" action="/admin/account/<%= @account.id  %>/update">
+          <div class="row mt-2">
+            <div class="col-md-6"><label class="labels">Name: </label><input type="text" name="user[name]" class="form-control" placeholder="First name" value="<%= @account.name  %>"></div>
+            <div class="col-md-6"><label class="labels">Email: </label><input type="email" name="user[email]" class="form-control" placeholder="Enter email" value="<%= @account.email  %>"></div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-6">
+              <label class="labels">Account role: </label>
+              <select <% if current_user.role != "admin" %> disabled <% end %> name="user[role]" class="form-select">
+                <% @account_roles.each do |role| %>
+                  <option <% if @account.role == role["value"] %> selected <% end %> value="<%= role["value"] %>"><%= role["name"] %></option>
+                <% end %>
+              </select>
+            </div>
+          </div>
+          <div class="mt-5"><button id="save-profile-button" class="disabled w-100 btn btn-primary profile-button" <% if current_user.role != "admin" %> disabled <% end %> type="submit">Save Profile</button></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    if(<% current_user.role %> != "admin") {
+      document.querySelectorAll("input, select").forEach(function(input) {
+        input.addEventListener("input", function() {
+          document.getElementById("save-profile-button").classList.remove("disabled");
+          document.getElementById("save-profile-button").disabled = false;
+        });
+      });
+    }
+  });
+</script>

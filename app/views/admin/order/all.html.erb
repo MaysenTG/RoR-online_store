@@ -1,0 +1,67 @@
+<h3 class="text-center" style="color: green"><%= notice %></h3>
+<h1 class="text-center d-flex justify-content-between">
+  Orders
+</h1>
+<br/>
+<div class="container">
+  <% if @has_filter %>
+    <a class="mb-3 h5" href="/admin/orders">Reset filter</a>
+  <% end %>
+  <form action="/admin/orders" method="GET" class="row">
+    <div class="form-check">
+      <div class="row g-3 align-items-center">
+        <div class="col-auto">
+          <label for="inputPassword6" class="col-form-label">Customer</label>
+        </div>
+        <div class="col-auto">
+          <select class="form-select" name="order[filter][customer_id]" aria-label="Default select example">
+            <% unless @current_filter %><option selected>Filter by customer</option><% end %>
+            <% @all_customers.each do |customer| %>
+              <% if customer["customer_id"] == @current_filter %>
+                <option selected value="<%= customer["customer_id"] %>"><%= customer["customer_name"] %></option>
+              <% else %>
+                <option value="<%= customer["customer_id"] %>"><%= customer["customer_name"] %></option>
+              <% end %>
+            <% end %>
+          </select>
+        </div>
+        <div class="col-auto">
+        </div>
+      </div>
+    </div>
+  </form>
+  <br/>
+  <table class="table table-hover" id="product-table">
+    <thead>
+      <th scope="col">Order ID</th>
+      <th scope="col">Customer</th>
+      <th scope="col">Order total</th>
+      <th scope="col">Time ordered</th>
+    </thead>
+    <tbody>
+      <% if @orders.length == 0 %>
+        <tr>
+          <td colspan="4" class="text-center">No orders found</td>
+        </tr>
+      <% else %>
+        <% @orders.each do |o| %>
+          <% if o.customer %>
+            <tr data-href="/admin/orders/<%= o.id %>">
+              <td scope="row"><%= o.id %></td>
+              <td scope="row"><% if o.customer %><%= Stripe::Customer.retrieve(o.customer)["name"] %><% else %>No customer<% end %></td>
+              <td scope="row"><%= number_to_currency(o.amount / 100) %></td>
+              <td scope="row"><%= time_ago_in_words(Time.at(o.created).to_datetime) %> ago</td>
+            </tr>
+          <% end %>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<script>
+  // When the user changes the customer filter, submit the form
+  document.querySelector("select").addEventListener("change", function() {
+    console.log("asdasdsa")
+    this.closest("form").submit();
+  });
+</script>

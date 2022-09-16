@@ -22,11 +22,16 @@ Rails.application.routes.draw do
     resources :products
     resources :categories
     get '' => 'dashboard#home'
-    get '/orders' => 'dashboard#orders'
+    get '/orders' => 'order#all'
     get '/orders/:order_id' => 'order#show'
     get '/customers' => 'customer#all'
     get '/customers/:customer_id/edit' => 'customer#show'
     put '/customers/edit_customer' => 'customer#edit_customer'
+    
+    put 'account/:account_id/update' => 'account#edit'
+    get 'account/:account_id' => 'account#show'
+    get 'accounts' => 'account#all'
+    get '/search' => 'dashboard#search'
   end
   
   get '/products' => "shops#index"

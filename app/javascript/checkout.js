@@ -1,9 +1,6 @@
 // This is a public sample test API key.
 // Don’t submit any personally identifiable information in requests made with this key.
 // Sign in to see your own test API key embedded in code samples.
-console.log("---------")
-console.log("CHECKOUT.JS")
-console.log("---------")
 const stripe = Stripe("pk_test_bxJuE0fpBxauHmThIvNnWtDt");
 
 // The items the customer wants to buy

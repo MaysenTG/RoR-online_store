@@ -6,4 +6,6 @@
 <%= render "form", category: @category, formType: "Edit" %>
 
 <br>
+<%= button_to "Delete", admin_category_path(@category), method: :delete, class: "mt-5 btn btn-danger", data: {confirm: "Are you sure?"} %>
+<br>
 
