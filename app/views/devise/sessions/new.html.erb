@@ -2,12 +2,13 @@
   <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
     <img class="mb-4" src="/docs/5.2/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
     <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+    <p class="mb-3 fw-normal">This is a guest login account, no CRUD operations can be performed (yes, you can try :) )</p>
     <div class="form-floating">
-      <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", value: "guest@gmail.com" %>
       <label for="floatingInput">Email address</label>
     </div>
     <div class="form-floating">
-      <%= f.password_field :password, autocomplete: "current-password", class: "form-control" %>
+      <%= f.password_field :password, autocomplete: "current-password", class: "form-control", value: "password123" %>
       <label for="floatingPassword">Password</label>
     </div>
     <div class="checkbox mb-3">
