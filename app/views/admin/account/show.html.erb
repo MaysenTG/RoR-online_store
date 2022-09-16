@@ -40,7 +40,7 @@
 </div>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-    if(<%= current_user.role %> != "admin") {
+    if("<%= current_user.role %>" != "admin") {
       document.querySelectorAll("input, select").forEach(function(input) {
         input.addEventListener("input", function() {
           document.getElementById("save-profile-button").classList.remove("disabled");
