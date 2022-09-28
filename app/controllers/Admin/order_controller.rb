@@ -3,10 +3,15 @@ module Admin
     
     def show
       @order = Stripe::Charge.retrieve(params[:order_id])
+      
+      puts "------"
+      puts @order
+      puts "------"
       customer_id = @order["customer"]
       @customer = Stripe::Customer.retrieve(customer_id)
       @order_items = @order["description"]
       
+      line_items = Stripe::Checkout::Session.list_line_items('cs_test_a1iylKQcqrGYSrIltWSVvs2DyixpaMktNnElby1JDpKKSNwIEK1kZOha0x', {limit: 5})
       # Get the order items from the order and fine the product
       # that matches the order item
       @total_order_cost = 0

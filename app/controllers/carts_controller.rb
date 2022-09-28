@@ -93,15 +93,19 @@ class CartsController < ApplicationController
   end
   
   def get_cart
+    puts "-----getting cart------"
+    
     cart = session["cart_contents"]
     
     session["cart_contents"]["items"].each do |item|
       # Get the URL of the active storage image
       product = Product.find(item["id"])
+        
       url = rails_blob_url(product.image, only_path: true)
       item["image_url"] = url
     end
     render json: session["cart_contents"].as_json
+    puts "-----end getting cart------"
   end
   
   private

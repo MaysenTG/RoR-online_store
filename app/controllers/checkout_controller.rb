@@ -15,6 +15,10 @@ class CheckoutController < ApplicationController
     @customer = Stripe::Customer.retrieve(session["new_order_customer_id"])
   end
   
+  def cancel
+    redirect_to "/carts/show"
+  end
+  
   def create_order
     Stripe::Charge.create({
       amount: @cart_total_cost.to_i,
@@ -84,7 +88,7 @@ class CheckoutController < ApplicationController
     end
     
     
-    redirect_to "/checkout/payment"
+    create_checkout_session
   end
   
   # An endpoint to start the payment process
@@ -122,6 +126,39 @@ class CheckoutController < ApplicationController
     # {
     #   clientSecret: payment_intent['client_secret']
     # }.to_json
+  end
+  
+  def create_checkout_session
+    
+    puts session["new_order_customer_info"]
+    puts session["new_order_customer_id"]
+    # Create line items variable and add all the items to it
+    line_items = []
+    session["cart_contents"]["items"].each do |item|
+      line_items.push({
+        price_data: {
+          currency: 'usd',
+          product_data: {
+            name: item["title"],
+            images: ["http://localhost:3000#{item["image_url"]}"],
+          },
+          unit_amount: item["price"].to_i * 100,
+        },
+        quantity: item["quantity"],
+      })
+    end
+    
+    customer_id = session["new_order_customer_id"]
+    
+    session = Stripe::Checkout::Session.create({
+      line_items: line_items,
+      mode: 'payment',
+      success_url: request.base_url + '/checkout/success',
+      cancel_url: request.base_url + '/checkout/cancel',
+      customer: customer_id,
+    })
+    
+    redirect_to session.url, allow_other_host: true
   end
   
   def payment

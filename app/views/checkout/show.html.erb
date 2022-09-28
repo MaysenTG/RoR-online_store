@@ -36,8 +36,7 @@
       </div>
       <div class="col-md-7 col-lg-8">
         <h4 class="mb-3">Shipping address</h4>
-        <!-- <form id="payment-form" class="needs-validation was-validated" novalidate="" action="create_customer"> -->
-        <form id="payment-form" action="create-customer" method="POST">
+        <form id="payment-form" action="/create-customer" method="POST">
           <div class="row g-3">
             <div class="col-sm-6">
               <label for="firstName" class="form-label">First name</label>
@@ -131,7 +130,7 @@
             <label class="form-check-label" for="save-info">Save this information for next time</label>
           </div>
           <hr class="my-4">
-          <button id="continue-to-payment" class="w-100 btn btn-primary btn-lg">Continue to payment</button>
+          <button type="submit" id="continue-to-payment" class="w-100 btn btn-primary btn-lg">Checkout</button>
         </form>
       </div>
     </div>
@@ -145,5 +144,4 @@
     </ul>
   </footer>
 </div>
-
 <%= render "snippets/checkout-validation" %>

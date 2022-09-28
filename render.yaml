@@ -1,0 +1,17 @@
+databases:
+  - name: online-store
+    databaseName: online-store
+
+services:
+  - type: web
+    name: online-store
+    env: ruby
+    buildCommand: "./bin/render-build.sh"
+    startCommand: "bundle exec puma -C config/puma.rb"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: online-store
+          property: connectionString
+      - key: RAILS_MASTER_KEY
+        sync: false

@@ -12,8 +12,10 @@ Rails.application.routes.draw do
   get '/checkout' => 'checkout#show'
   get '/checkout/payment' => 'checkout#payment'
   get '/checkout/success' => 'checkout#order_page'
+  get '/checkout/cancel' => 'checkout#cancel'
   
   # Stripe API
+  post '/create-checkout-session' => 'checkout#create_checkout_session'
   post '/create-payment-intent' => 'checkout#create_payment_intent'
   post '/create-customer' => 'checkout#create_customer'
   

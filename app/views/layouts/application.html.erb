@@ -5,6 +5,7 @@
     <title>OnlineStore</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <script src="https://js.stripe.com/v3/"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
     <% if request.path.include?("/payment") %>
       <%= stylesheet_link_tag "checkout", "data-turbo-track": "reload" %>
     <% end %>
@@ -64,7 +65,7 @@
           $("tr").click(function() {
             if($(this).data("href") != null) {
               window.location = $(this).data("href");
-            } 
+            }
           });
       });
     </script>
