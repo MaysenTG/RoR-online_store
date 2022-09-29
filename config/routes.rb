@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     resources :products
     resources :categories
     get '' => 'dashboard#home'
+    get '/search' => 'dashboard#search'
     get '/orders' => 'order#all'
     get '/orders/:order_id' => 'order#show'
     get '/customers' => 'customer#all'
@@ -33,7 +34,7 @@ Rails.application.routes.draw do
     put 'account/:account_id/update' => 'account#edit'
     get 'account/:account_id' => 'account#show'
     get 'accounts' => 'account#all'
-    get '/search' => 'dashboard#search'
+    post '/new_search' => 'dashboard#search'
   end
   
   get '/products' => "shops#index"

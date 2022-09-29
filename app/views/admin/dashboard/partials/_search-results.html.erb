@@ -1,0 +1,26 @@
+<div class="container">
+  <% unless products.nil? %>
+    <h3><%= @products.count %> products found</h3>
+    <div class="container mt-3">
+      <br/>
+      <div class="list-group">
+        <% @products.each do |product| %>
+          <a href="/admin/products/<%= product.id %>/edit" class="list-group-item list-group-item-action" aria-current="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart align-text-bottom" aria-hidden="true"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg> <%= highlight(product.title, params[:query]) %></a>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+  <hr>
+  <% unless @categories.nil? %>
+    <h3><%= @categories.count %> collections found</h3>
+    <div class="container mt-3">
+      <br/>
+      <div class="list-group">
+        <% @categories.each do |category| %>
+          <a href="/admin/categories/<%= category.id %>/edit" class="list-group-item list-group-item-action" aria-current="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart align-text-bottom" aria-hidden="true"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg> <%= highlight(category.category, params[:query]) %></a>
+        <% end %>
+      </div>
+    </div>
+    <br/>
+  <% end %>
+</div>

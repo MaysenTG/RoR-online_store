@@ -1,0 +1,8 @@
+<!-- Page with a search bar that returns results -->
+<div class="container mt-3">
+  <%= form_with url: admin_new_search_path, method: :post do |form| %>
+    <h2 class="form-label">Search the admin</h2>
+    <%= form.search_field :query, class: "form-control", placeholder: "Search query", oninput: "this.form.requestSubmit()" %>
+  <% end %>
+  <div id="search-results"></div>
+</div>

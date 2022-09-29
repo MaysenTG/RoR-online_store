@@ -14,27 +14,27 @@
 <div id="modal-container">
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Search</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <input class="form-control form-control w-100 rounded-2 border" type="text" placeholder="Search" aria-label="Search">
-        </div>
-        <div class="modal-body">
-          <div hidden id="search-loading-spinner" class="spinner-border text-primary text-align-center" role="status">
-            <span class="visually-hidden">Loading...</span>
+      <%= form_with url: admin_new_search_path, method: :post do |form| %>
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Search</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div id="products-results">
+          <div class="modal-body">
+            <%= form.search_field :query, class: "form-control w-100 rounded-2 border", placeholder: "Search query", oninput: "this.form.requestSubmit()" %>
           </div>
-          <div id="categories-results">
+          <div class="modal-body">
+            <div hidden id="search-loading-spinner" class="spinner-border text-primary text-align-center" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <div id="search-results">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
+      <% end %>
     </div>
   </div>
 </div>
