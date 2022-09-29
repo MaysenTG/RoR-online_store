@@ -63,6 +63,7 @@ end
 
 group :production do
   gem "pg", "~> 1.1"
+  gem 'sqlite3', '~> 1.3', '>= 1.3.11'
 end
 
 
