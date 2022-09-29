@@ -1,9 +1,16 @@
 <!-- Page with a search bar that returns results -->
+<div data-controller="debounce"></div>
 <div class="container mt-3">
-  <%= form_with url: admin_new_search_path, method: :post do |form| %>
+  <%= form_with url: admin_new_search_path, method: :post, data: { controller: "debounce", debounce_target: "form" } do |form| %>
     <h2 class="form-label">Search the admin</h2>
-    <%= form.search_field :query, class: "form-control", placeholder: "Search query", oninput: "this.form.requestSubmit()" %>
+    <%= form.search_field :query, class: "form-control", placeholder: "Search query", data: { action: "input->debounce#search" }%>
     <input type="hidden" name="source" value="search_page">
   <% end %>
-  <div id="search-results"></div>
+  <div id="search-results">
+  </div>
+  <div class="mt-5 d-flex justify-content-center">
+    <div id="search-loading-spinner" class="d-none spinner-border text-primary text-align-center" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
 </div>

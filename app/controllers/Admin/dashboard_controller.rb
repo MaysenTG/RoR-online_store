@@ -13,8 +13,8 @@ module Admin
       puts "searching"
       
       if params[:query] != ""
-        @products = Product.where("id LIKE :search or description LIKE :search or price LIKE :search or title LIKE :search or created_at LIKE :search or updated_at LIKE :search", search: "%#{params[:query]}%")
-        @categories = Category.where("id LIKE :search or category LIKE :search or created_at LIKE :search or updated_at LIKE :search", search: "%#{params[:query]}%")
+        @products = Product.product_search(params[:query])
+        @categories = Category.category_search(params[:query])
       end
       
       respond_to do |format|
