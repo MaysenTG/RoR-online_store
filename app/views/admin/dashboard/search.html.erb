@@ -3,6 +3,7 @@
   <%= form_with url: admin_new_search_path, method: :post do |form| %>
     <h2 class="form-label">Search the admin</h2>
     <%= form.search_field :query, class: "form-control", placeholder: "Search query", oninput: "this.form.requestSubmit()" %>
+    <input type="hidden" name="source" value="search_page">
   <% end %>
   <div id="search-results"></div>
 </div>

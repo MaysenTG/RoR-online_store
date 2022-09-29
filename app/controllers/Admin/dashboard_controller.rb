@@ -9,6 +9,7 @@ module Admin
     def search
       puts "searching"
       puts params[:query]
+      puts "source: #{params[:source]}"
       puts "searching"
       
       if params[:query] != ""
@@ -19,11 +20,19 @@ module Admin
       respond_to do |format|
         if params[:query] == ""
           format.turbo_stream do
-            render turbo_stream: turbo_stream.update("search-results", partial: "admin/dashboard/partials/blank-results")
+            if params[:source] == "modal"
+              render turbo_stream: turbo_stream.update("search-results-modal", partial: "admin/dashboard/partials/blank-results")
+            else
+              render turbo_stream: turbo_stream.update("search-results", partial: "admin/dashboard/partials/blank-results")
+            end
           end
         else
           format.turbo_stream do
-            render turbo_stream: turbo_stream.update("search-results", partial: "admin/dashboard/partials/search-results", locals: {products: @products, categories: @categories})
+            if params[:source] == "modal"
+              render turbo_stream: turbo_stream.update("search-results-modal", partial: "admin/dashboard/partials/search-results", locals: {products: @products, categories: @categories})
+            else
+              render turbo_stream: turbo_stream.update("search-results", partial: "admin/dashboard/partials/search-results", locals: {products: @products, categories: @categories})
+            end
           end
         end
         format.html do
