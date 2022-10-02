@@ -39,7 +39,7 @@ class CartsController < ApplicationController
     
     @cart_items = session["cart_contents"]["items"]
     respond_to do |format|
-      format.turbo_stream { render turbo_stream: turbo_stream.update("cart-show", partial: "carts/carts_item", locals: { cart_items: @cart_items }) }
+      format.turbo_stream { render turbo_stream: [turbo_stream.update("cart-show", partial: "carts/carts_item", locals: { cart_items: @cart_items }), turbo_stream.update("cart", partial: "carts/cart")] }
       format.json { render json: {status => session["cart_contents"]["items"].length} }
     end
   end
@@ -57,7 +57,7 @@ class CartsController < ApplicationController
     
     @cart_items = session["cart_contents"]["items"]
     respond_to do |format|
-      format.turbo_stream { render turbo_stream: turbo_stream.update("cart-show", partial: "carts/carts_item", locals: { cart_items: @cart_items }) }
+      format.turbo_stream { render turbo_stream: [turbo_stream.update("cart-show", partial: "carts/carts_item", locals: { cart_items: @cart_items }), turbo_stream.update("cart", partial: "carts/cart")] }
       format.json { render json: {status => session["cart_contents"].length} }
     end
   end
