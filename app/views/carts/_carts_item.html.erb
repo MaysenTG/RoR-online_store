@@ -1,12 +1,17 @@
 <section class="w-100">
-  <div style="padding: 0 5rem;" class="w-100 row d-flex align-items-center h-100">
-    <div class="col col-lg-8 col-sm-12">
+  <% if notice %>
+    <div class="m-3 alert alert-warning alert-dismissible fade show" role="alert">
+      <%= notice %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% end%>
+  <div data-controller="cart" style="padding: 0 2rem;" class="w-100 row d-flex align-items-top h-100">
+    <div class="col col-lg-8 col-sm-12" style="margin-top: 6rem;">
       <div class="table-responsive">
         <table class="table">
           <thead>
             <tr>
               <th scope="col" class="h5">Shopping Bag</th>
-              <th scope="col">Price</th>
               <th scope="col">Quantity</th>
               <th scope="col">Total price</th>
             </tr>
@@ -23,18 +28,14 @@
                     <% end %>
                     <div class="flex-column ms-4">
                       <p class="mb-2"><%= item["title"] %></p>
-                      <p class="mb-0">Daniel Kahneman</p>
                     </div>
                   </div>
                 </th>
                 <td class="align-middle">
-                  <p data-individual-price-per-product="<%= item["id"] %>" class="mb-0" style="font-weight: 500;"><%= item["price"] %></p>
-                </td>
-                <td class="align-middle">
-                  <form id="product_form-<%= item["id"] %>" action="/admin/cart/update" method="PUT">
+                  <form id="product_form-<%= item["id"] %>" action="/cart/update" method="PUT">
                     <input type="hidden" value="<%= item["id"] %>" name="product_id">
                     <div class="d-flex flex-row align-items-center">
-                      <button class="update-quantity-btn btn btn-link px-2"
+                      <button type="submit" class="update-quantity-btn btn btn-link px-2"
                       onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
                         <i class="bi bi-dash"></i>
                       </button>
@@ -42,9 +43,9 @@
                         <span class="visually-hidden">Loading...</span>
                       </div>
                       <input min="0" name="quantity" value="<%= item["quantity"] %>" type="number"
-                      class="product_quantity form-control form-control-sm" style="width: 50px;" />
-                      <button class="update-quantity-btn btn btn-link px-2"
-                      onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                      class="product_quantity form-control form-control-sm" oninput="this.form.requestSubmit()" style="width: 50px;" />
+                      <button type="submit" class="update-quantity-btn btn btn-link px-2"
+                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
                         <i class="bi bi-plus"></i>
                       </button>
                     </div>
@@ -54,11 +55,11 @@
                   <p data-total-price-product="<%= item["id"] %>" class="mb-0" style="font-weight: 500;"><%= number_to_currency(item["quantity"].to_i * item["price"].to_i) %></p>
                 </td>
                 <td class="align-middle">
-                  <form id="delete-product-cart-form" method="delete">
+                  <form id="delete-product-cart-form" method="delete" action="/cart/delete">
                     <input type="hidden" value="<%= item["id"] %>" name="product_id">
                     <input value="<%= item["quantity"] %>" min="1" class="form-control" type="hidden" name="quantity" id="product_quantity">
                     <span class="d-flex">
-                      <button type="button" class="remove-product-from-cart btn btn-danger">X</button>
+                      <button type="submit" class="remove-product-from-cart btn btn-danger">X</button>
                       <button hidden class="btn btn-danger remove-from-cart-loading" type="button" disabled style="width: 100%;">
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                       </button>
@@ -83,7 +84,7 @@
             <td>
               <div class="d-flex justify-content-between mb-4">
                 <h5 class="text-uppercase">Total items: <span id="total-num-items"><%= total_items_in_cart %></span></h5>
-                <h5 id="sub-total-of-items">$<%= sub_total_in_cart %></h5>
+                <h5 id="sub-total-of-items"><%= number_to_currency(sub_total_in_cart) %></h5>
               </div>
               <h5 class="text-uppercase mb-3">Shipping</h5>
               <div class="mb-4 pb-2">
@@ -106,9 +107,9 @@
               <hr class="my-4">
               <div class="d-flex justify-content-between mb-5">
                 <h5 class="text-uppercase">Total price</h5>
-                <h5><span id="total-price-before-shipping">$<%= sub_total_in_cart %></span></h5>
+                <h5><span id="total-price-before-shipping"><%= number_to_currency(sub_total_in_cart) %></span></h5>
               </div>
-              <a href="/checkout" <% if total_items_in_cart == 0 %>disabled<% end %> class="w-100 btn btn-dark btn-block btn-lg" data-mdb-ripple-color="dark">Checkout</a>
+              <a href="/checkout" <% if total_items_in_cart == 0 %>disabled<% end %> class="<% if total_items_in_cart == 0 %>disabled<% end %> w-100 btn btn-dark btn-block btn-lg" data-mdb-ripple-color="dark">Checkout</a>
             </td>
           </tbody>
         </table>
@@ -120,6 +121,9 @@
 <br/>
 <br/>
 <script>
+  document.querySelector("#cart-items-count").innerHTML = "<%= total_items_in_cart %>"
+</script>
+<%# <script>
   document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("shipping-select").addEventListener("change", async function(e) {
       const cart_response = await fetch('/cart')
@@ -208,11 +212,7 @@
           let data = await response.json();
 
           window.location.reload()
-
-          //btn.disabled = false;
-          //btn.nextElementSibling.setAttribute("hidden", "true");
-          //btn.removeAttribute("hidden");
         })
       })
   })
-</script>
+</script> %>

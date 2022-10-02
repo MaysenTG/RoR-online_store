@@ -1,6 +1,12 @@
+<% if @category %>
+  <% href = "/collections/#{@category.id}/products/#{product.id}" %>
+<% else %>
+  <% href = "products/#{product.id}" %>
+<% end %>
+
 <div style="min-height: 200px;" class="col-md-6 col-lg-4 col-sm-6 mb-4 mb-lg-0">
   <div style="min-height: 200px;" class="card">
-    <a href="/products/<%= product.id %>">
+    <a href=<%= href %>>
       <% if product.image.attached? %>
         <%= image_tag product.image, class: "card-img-top"%>
       <% else %>

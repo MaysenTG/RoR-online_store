@@ -38,10 +38,10 @@ class CheckoutController < ApplicationController
   
   
   def require_items
-    if session["cart_contents"]["items"] and sub_total_in_cart > 0
-      return true
+    if session["cart_contents"].nil? or sub_total_in_cart <= 0
+      redirect_to carts_show_path, notice: "You must have items in your cart to checkout"
     else
-      redirect_to carts_show_path
+      return true
     end
   end
   

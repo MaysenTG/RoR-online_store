@@ -1,5 +1,9 @@
 <div class="container">
   <h1>Accounts</h1>
+  <div data-controller="hello">
+    <button class="btn btn-primary">Controller test</button>
+    <%= button_tag 'Helper button', class: "btn btn-primary", data: { action: "click->hello#change" } %>
+  </div>
   <div class="list-group mt-3">
     <h4>Currently logged in as:</h4>
     <a href="/admin/account/<%= @currently_logged_in.id %>" class="list-group-item list-group-item-action active" aria-current="true">

@@ -17,7 +17,8 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
           <h4 class="text-right">Profile Settings</h4>
         </div>
-        <form method="put" action="/admin/account/<%= @account.id  %>/update">
+        <form data-turbo="false" method="put" action="/admin/account/<%= @account.id  %>/update">
+          <input type="hidden" name="_method" value="put" />
           <div class="row mt-2">
             <div class="col-md-6"><label class="labels">Name: </label><input type="text" name="user[name]" class="form-control" placeholder="First name" value="<%= @account.name  %>"></div>
             <div class="col-md-6"><label class="labels">Email: </label><input type="email" name="user[email]" class="form-control" placeholder="Enter email" value="<%= @account.email  %>"></div>

@@ -37,7 +37,9 @@ class CartsController < ApplicationController
       session["cart_contents"]["items"] = new_data
     end
     
+    @cart_items = session["cart_contents"]["items"]
     respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.update("cart-show", partial: "carts/carts_item", locals: { cart_items: @cart_items }) }
       format.json { render json: {status => session["cart_contents"]["items"].length} }
     end
   end
@@ -53,15 +55,14 @@ class CartsController < ApplicationController
     end
     session["cart_contents"]["items"] = new_data
     
+    @cart_items = session["cart_contents"]["items"]
     respond_to do |format|
-      #format.js { render :file => "rerender.js.erb" }
-      #format.html { render partial: "rerender.html.erb" }
+      format.turbo_stream { render turbo_stream: turbo_stream.update("cart-show", partial: "carts/carts_item", locals: { cart_items: @cart_items }) }
       format.json { render json: {status => session["cart_contents"].length} }
     end
   end
   
   def add_item
-
     if !session["cart_contents"]["items"].nil?
       if session["cart_contents"]["items"].detect { |e| e['id'] == @product.id }
         current_quantity = session["cart_contents"]["items"].detect { |e| e['id'] == @product.id }['quantity']
@@ -83,11 +84,12 @@ class CartsController < ApplicationController
     end
       
     respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.update("cart", partial: "carts/cart") }
       format.json { render json: {status => session["cart_contents"].length} }
     end
   end
   
-  def update_cart_info    
+  def update_cart_info
     session["cart_contents"]["info"]["subtotal"] = sub_total_in_cart
     session["cart_contents"]["info"]["total_items"] = total_items_in_cart
   end
@@ -104,7 +106,29 @@ class CartsController < ApplicationController
       url = rails_blob_url(product.image, only_path: true)
       item["image_url"] = url
     end
-    render json: session["cart_contents"].as_json
+    
+    @cart_items = [] 
+    
+    begin
+      session["cart_contents"]["items"].each do |line|
+        if line.include?("id")
+          product = Product.find(line["id"])
+          url = rails_blob_path(product.image, only_path: true)
+          line["image_url"] = url
+          @cart_items << line
+        end
+      end
+    rescue => e
+      @cart_items = []
+    end
+    
+    @total_items_in_cart = total_items_in_cart
+    
+    respond_to do |format|
+      format.html { render :show }
+      format.json { render json: cart }
+    end
+    
     puts "-----end getting cart------"
   end
   
@@ -113,11 +137,16 @@ class CartsController < ApplicationController
   def set_product
     begin
       json_params = JSON.parse(request.raw_post)
-      puts json_params["product_id"]
       @quantity = json_params["quantity"]
       @product = Product.find(json_params["product_id"])
     rescue => e
-      @product = Product.find(params[:id])
+      begin
+        @product = Product.find(params[:id])
+        @quantity = params[:quantity]
+      rescue
+        @product = Product.find(params[:product_id])
+        @quantity = params[:quantity]
+      end
     end
   end
   

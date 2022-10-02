@@ -32,6 +32,7 @@ Rails.application.routes.draw do
     put '/customers/edit_customer' => 'customer#edit_customer'
     
     put 'account/:account_id/update' => 'account#edit'
+    get 'account/:account_id/update' => 'account#edit'
     get 'account/:account_id' => 'account#show'
     get 'accounts' => 'account#all'
     post '/new_search' => 'dashboard#search'
