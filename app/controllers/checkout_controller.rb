@@ -49,21 +49,22 @@ class CheckoutController < ApplicationController
     potential_customer = Stripe::Customer.search({
       query: "email: \"#{params['customer']['email']}\"",
     })
+    param_data = params
     
     if potential_customer["data"].length > 0
       #puts potential_customer
       session["new_order_customer_id"] = potential_customer["data"][0]["id"]
       # If address params is different to object, update customer
-      if potential_customer["data"][0]["address"]["line1"] != params["address"]["address_1"]
+      if potential_customer["data"][0]["address"]["line1"] != param_data["address"]["address_1"]  
         updated_customer_address = Stripe::Customer.update(
           potential_customer["data"][0]["id"],
           {
             address: {
-              city: params["address"]["city"],
-              country: params["address"]["country"],
-              line1: params["address"]["address_1"],
-              postal_code: params["address"]["zip"],
-              state: params["address"]["region"]
+              city: param_data["address"]["city"],
+              country: param_data["address"]["country"],
+              line1: param_data["address"]["address_1"],
+              postal_code: param_data["address"]["zip"],
+              state: param_data["address"]["region"]
             }
           })
           
@@ -74,14 +75,14 @@ class CheckoutController < ApplicationController
     else
       new_customer = Stripe::Customer.create({
         address: {
-          city: params["customer"]["address"]["city"],
-          country: params["address"]["country"],
-          line1: params["address"]["address_1"],
-          postal_code: params["address"]["zip"],
-          state: params["address"]["region"],
+          city: param_data["address"]["city"],
+          country: param_data["address"]["country"],
+          line1: param_data["address"]["address_1"],
+          postal_code: param_data["address"]["zip"],
+          state: param_data["address"]["region"],
         },
-        name: params["customer"]["first_name"] + " " + params["customer"]["last_name"],
-        email: params["customer"]["email"],
+        name: param_data["customer"]["first_name"] + " " + param_data["customer"]["last_name"],
+        email: param_data["customer"]["email"],
       })
       session["new_order_customer_id"] = new_customer["id"]
       session["new_order_customer_info"] = new_customer
@@ -118,20 +119,12 @@ class CheckoutController < ApplicationController
       },
       customer: customer_id,
       description: items_json
-      #metadata: items_json
     )
     
-    #session["checkout_payment_intent_secret"] = payment_intent['client_secret']
     render json: { clientSecret: payment_intent['client_secret'] }.as_json
-    # {
-    #   clientSecret: payment_intent['client_secret']
-    # }.to_json
   end
   
   def create_checkout_session
-    
-    puts session["new_order_customer_info"]
-    puts session["new_order_customer_id"]
     # Create line items variable and add all the items to it
     line_items = []
     session["cart_contents"]["items"].each do |item|
@@ -140,7 +133,7 @@ class CheckoutController < ApplicationController
           currency: 'usd',
           product_data: {
             name: item["title"],
-            images: ["http://localhost:3000#{item["image_url"]}"],
+            images: ["#{item["image_url"]}"],
           },
           unit_amount: item["price"].to_i * 100,
         },
@@ -159,6 +152,7 @@ class CheckoutController < ApplicationController
     })
     
     redirect_to session.url, allow_other_host: true
+    session["cart_contents"] = nil
   end
   
   def payment

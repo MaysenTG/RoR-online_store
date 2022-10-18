@@ -26,7 +26,10 @@ gem "jbuilder"
 gem 'jquery-rails', '~> 4.1', '>= 4.1.1'
 gem 'devise'
 gem 'redis', '~> 3.3', '>= 3.3.1'
+
 gem 'aws-sdk-s3', require: false
+gem "google-cloud-storage", "~> 1.11", require: false
+
 gem 'bullet', group: 'development'
 gem 'stripe'
 

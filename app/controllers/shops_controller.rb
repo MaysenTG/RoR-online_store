@@ -14,7 +14,6 @@ class ShopsController < ApplicationController
     begin
       @category = Category.find(params[:collection_id])
     rescue => e
-      puts "no collection"
       @category = nil
     end
     

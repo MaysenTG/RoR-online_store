@@ -5,8 +5,6 @@ module Admin
     
     def show
       @account_roles = account_roles.as_json
-      #puts @account_roles
-      puts current_user.inspect
     end
 
     def all

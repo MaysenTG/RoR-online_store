@@ -55,7 +55,7 @@
           <div class="mb-3">
             <br/>
             <%= form.label :image %>
-            <%= form.file_field :image, class: "form-control", onkeydown: "readURL(this);" %>
+            <%= form.file_field :image, class: "form-control", onkeydown: "readURL(this);", onchange: "showSave();" %>
           </div>
           <div class="mb-3">
             <label>Category: </label>
@@ -68,13 +68,11 @@
 </div>
 <script>
   function readURL(input) {
-    showSave();
-
     if (input.files && input.files[0]) {
       var reader = new FileReader();
 
       reader.onload = function (e) {
-        document.getElementById("product-img-tag").src=e.target.result;
+        document.getElementById("product-img-tag").src = e.target.result;
       };
 
       reader.readAsDataURL(input.files[0]);

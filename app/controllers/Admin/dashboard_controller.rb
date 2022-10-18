@@ -7,11 +7,6 @@ module Admin
     end
     
     def search
-      puts "searching"
-      puts params[:query]
-      puts "source: #{params[:source]}"
-      puts "searching"
-      
       if params[:query] != ""
         @products = Product.product_search(params[:query])
         @categories = Category.category_search(params[:query])

@@ -26,6 +26,11 @@
       <!-- END LOGIN CSS -->
     <% end %>
     <%= javascript_importmap_tags %>
+    <style>
+      tbody > tr {
+        cursor: pointer;
+      }
+    </style>
   </head>
   <body>
     <% if request.path.include?("admin") %>

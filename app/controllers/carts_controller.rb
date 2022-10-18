@@ -11,8 +11,9 @@ class CartsController < ApplicationController
       session["cart_contents"]["items"].each do |line|
         if line.include?("id")
           product = Product.find(line["id"])
-          url = rails_blob_path(product.image, only_path: true)
-          line["image_url"] = url
+          image_key = product.image.key
+          product_image_url = "https://storage.googleapis.com/online-store-product-images/"+image_key
+          line["image_url"] = product_image_url
           @cart_items << line
         end
       end
@@ -90,21 +91,23 @@ class CartsController < ApplicationController
   end
   
   def update_cart_info
-    session["cart_contents"]["info"]["subtotal"] = sub_total_in_cart
-    session["cart_contents"]["info"]["total_items"] = total_items_in_cart
+    unless session["cart_contents"].nil? 
+      session["cart_contents"]["info"]["subtotal"] = sub_total_in_cart
+      session["cart_contents"]["info"]["total_items"] = total_items_in_cart
+    end
+    
   end
   
   def get_cart
-    puts "-----getting cart------"
-    
     cart = session["cart_contents"]
-    
-    session["cart_contents"]["items"].each do |item|
-      # Get the URL of the active storage image
-      product = Product.find(item["id"])
-        
-      url = rails_blob_url(product.image, only_path: true)
-      item["image_url"] = url
+    if !cart.nil?
+      session["cart_contents"]["items"].each do |item|
+        # Get the URL of the active storage image
+        product = Product.find(item["id"])
+        image_key = product.image.key
+        product_image_url = "https://storage.googleapis.com/online-store-product-images/"+image_key
+        item["image_url"] = product_image_url
+      end
     end
     
     @cart_items = [] 
@@ -113,8 +116,10 @@ class CartsController < ApplicationController
       session["cart_contents"]["items"].each do |line|
         if line.include?("id")
           product = Product.find(line["id"])
-          url = rails_blob_path(product.image, only_path: true)
-          line["image_url"] = url
+          #url = rails_blob_path(product.image, only_path: true)
+          image_key = product.image.key
+          product_image_url = "https://storage.googleapis.com/online-store-product-images/"+image_key
+          line["image_url"] = product_image_url
           @cart_items << line
         end
       end
@@ -128,8 +133,6 @@ class CartsController < ApplicationController
       format.html { render :show }
       format.json { render json: cart }
     end
-    
-    puts "-----end getting cart------"
   end
   
   private

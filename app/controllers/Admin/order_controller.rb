@@ -2,27 +2,24 @@ module Admin
   class OrderController < ApplicationController
     
     def show
-      @order = Stripe::Charge.retrieve(params[:order_id])
+      @order = Stripe::Checkout::Session.retrieve(params[:order_id])
+    
+      @line_items = Stripe::Checkout::Session.list_line_items(params[:order_id])["data"]
       
-      puts "------"
-      puts @order
-      puts "------"
-      customer_id = @order["customer"]
-      @customer = Stripe::Customer.retrieve(customer_id)
-      @order_items = @order["description"]
+      puts "---------"
+      puts @line_items
+      puts "---------"
       
-      line_items = Stripe::Checkout::Session.list_line_items('cs_test_a1iylKQcqrGYSrIltWSVvs2DyixpaMktNnElby1JDpKKSNwIEK1kZOha0x', {limit: 5})
-      # Get the order items from the order and fine the product
-      # that matches the order item
-      @total_order_cost = 0
-      @order_products = []
-      JSON.parse(@order_items).each do |item|
-        product = Product.find(item["id"]).as_json
-        product["quantity"] = item["quantity"]
-        product["total_price"] = item["quantity"].to_i * product["price"].to_i
-        @order_products.push(product)
-        @total_order_cost += product["total_price"]
-      end
+      @customer = Stripe::Customer.retrieve(@order["customer"])
+      
+      @customer_account_info = @order["customer_details"]
+      @customer_address = @customer_account_info["address"]
+      
+      @payment_intent = Stripe::PaymentIntent.retrieve(@order["payment_intent"])
+    
+      @payment_method_details = @payment_intent["charges"]["data"][0]["payment_method_details"]
+      
+      @total_order_cost = @order["amount_total"]
     end
     
     def all
@@ -35,23 +32,27 @@ module Admin
         @all_customers.push({ customer_id: customer["id"], customer_name: customer["name"] }.as_json)
       end
       
-      @charges = Stripe::Charge.list({limit: 100})
-      @orders = @charges["data"]
+      @sessions = Stripe::Checkout::Session.list()
+
+      @orders = @sessions["data"]
+      
+      # Delete all non-complete/non-purchased orders
+      @orders.delete_if {|order| order["status"] != "complete" }
           
-      if (params[:order] != nil)
-        if(params[:order][:filter][:customer_id] != "")
-          puts "Filtering by customer with the ID #{params[:order][:filter][:customer_id]}"
-          @charges = Stripe::Charge.search({
-            query: "customer: \"#{params[:order][:filter][:customer_id]}\"",
-          })
-          @orders = @charges["data"]
-          @current_filter = params[:order][:filter][:customer_id]
-          @has_filter = true
-        else
-          @charges = Stripe::Charge.list({limit: 100})
-          @orders = @charges["data"]
-        end
-      end
+      # if (params[:order] != nil)
+      #   if(params[:order][:filter][:customer_id] != "")
+      #     puts "Filtering by customer with the ID #{params[:order][:filter][:customer_id]}"
+      #     @charges = Stripe::Charge.search({
+      #       query: "customer: \"#{params[:order][:filter][:customer_id]}\"",
+      #     })
+      #     @orders = @charges["data"]
+      #     @current_filter = params[:order][:filter][:customer_id]
+      #     @has_filter = true
+      #   else
+      #     @charges = Stripe::Charge.list({limit: 100})
+      #     @orders = @charges["data"]
+      #   end
+      # end
     end
   end
 end

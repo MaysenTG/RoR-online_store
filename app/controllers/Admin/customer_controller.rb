@@ -4,8 +4,16 @@ module Admin
     
     def show
       @customer = Stripe::Customer.retrieve(params[:customer_id])
-      @orders = Stripe::Charge.list({customer: params[:customer_id]})
-      @order_data = @orders["data"].as_json
+      @orders = Stripe::Checkout::Session.list({customer: params[:customer_id]})
+      
+      puts "-------"
+      puts "-------"
+      puts "-------"
+      puts @orders
+      puts "-------"
+      puts "-------"
+      
+      @order_data = @orders["data"]
     end
     
     def all

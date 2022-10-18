@@ -22,7 +22,7 @@
                 <th scope="row">
                   <div class="d-flex align-items-center">
                     <% if item["image_url"] %>
-                      <img src="<%= request.base_url %>/<%= item["image_url"] %>" style="width: 120px;"  class="img-fluid rounded-3" alt="...">
+                      <img src="<%= item["image_url"] %>" style="width: 120px;"  class="img-fluid rounded-3" alt="...">
                     <% else %>
                       <img src="https://dummyimage.com/100/fff/0011ff.png&text=Image+Not+Found" style="width: 120px;"  class="img-fluid rounded-3" alt="...">
                     <% end %>
