@@ -52,6 +52,7 @@ class CheckoutController < ApplicationController
   end
   
   def create_customer
+    session["can_proceed_to_post_purchase"] = true
     potential_customer = Stripe::Customer.search({
       query: "email: \"#{params['customer']['email']}\"",
     })
@@ -164,6 +165,7 @@ class CheckoutController < ApplicationController
   end
   
   def payment
+    session["can_proceed_to_post_purchase"] = true
     @shipping_info = session["new_order_customer_info"]["address"]
     @line_items = session["cart_contents"]["items"]
     @cart_total_cost = session["cart_contents"]["info"]["subtotal"]
