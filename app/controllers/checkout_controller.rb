@@ -1,18 +1,24 @@
 class CheckoutController < ApplicationController
   before_action :require_items
   
+  
   def show
+    session["can_proceed_to_post_purchase"] = false
     @line_items = session["cart_contents"]["items"]
     @cart_total_cost = session["cart_contents"]["info"]["subtotal"]
     @cart_total_items = session["cart_contents"]["info"]["total_items"]
   end
   
   def order_page
-    # Get Stripe customer info from session ID
-    @line_items = session["cart_contents"]["items"]
-    @cart_total_cost = session["cart_contents"]["info"]["subtotal"]
-    @cart_total_items = session["cart_contents"]["info"]["total_items"]
-    @customer = Stripe::Customer.retrieve(session["new_order_customer_id"])
+    if session["can_proceed_to_post_purchase"] == true
+      # Get Stripe customer info from session ID
+      @line_items = session["cart_contents"]["items"]
+      @cart_total_cost = session["cart_contents"]["info"]["subtotal"]
+      @cart_total_items = session["cart_contents"]["info"]["total_items"]
+      @customer = Stripe::Customer.retrieve(session["new_order_customer_id"])
+    else
+      redirect_to "/cart", notice: "You must complete the payment process to view this page"
+    end
   end
   
   def cancel
@@ -150,6 +156,8 @@ class CheckoutController < ApplicationController
       cancel_url: request.base_url + '/checkout/cancel',
       customer: customer_id,
     })
+    
+    session["can_proceed_to_post_purchase"] = true
     
     redirect_to session.url, allow_other_host: true
     session["cart_contents"] = nil
