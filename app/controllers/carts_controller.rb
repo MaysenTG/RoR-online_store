@@ -11,8 +11,9 @@ class CartsController < ApplicationController
       session["cart_contents"]["items"].each do |line|
         if line.include?("id")
           product = Product.find(line["id"])
-          image_key = product.image.key
-          product_image_url = "https://storage.googleapis.com/online-store-product-images/"+image_key
+          image_url = product.image.url
+          
+          product_image_url = image_url
           line["image_url"] = product_image_url
           @cart_items << line
         end
@@ -104,8 +105,18 @@ class CartsController < ApplicationController
       session["cart_contents"]["items"].each do |item|
         # Get the URL of the active storage image
         product = Product.find(item["id"])
-        image_key = product.image.key
-        product_image_url = "https://storage.googleapis.com/online-store-product-images/"+image_key
+        image_url = product.image.url
+        
+        puts "------"
+        puts "------"
+        puts "------"
+        the_url = product.image.url
+        puts the_url
+        puts "------"
+        puts "------"
+        puts "------"
+          
+        product_image_url = image_url
         item["image_url"] = product_image_url
       end
     end
@@ -117,13 +128,15 @@ class CartsController < ApplicationController
         if line.include?("id")
           product = Product.find(line["id"])
           #url = rails_blob_path(product.image, only_path: true)
-          image_key = product.image.key
-          product_image_url = "https://storage.googleapis.com/online-store-product-images/"+image_key
+          image_url = product.image.url
+          
+          product_image_url = image_url
           line["image_url"] = product_image_url
           @cart_items << line
         end
       end
     rescue => e
+      puts "Error: " + e
       @cart_items = []
     end
     

@@ -44,7 +44,7 @@ Rails.application.configure do
   end
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
-  config.active_storage.service = :google
+  config.active_storage.service = :cloudflare
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
@@ -82,4 +82,6 @@ Rails.application.configure do
   
   config.hosts = "4054fb27f05a4c47a32ed83ca440ab58.vfs.cloud9.us-east-1.amazonaws.com" # Amazon Cloud9 Dev
   config.hosts = "localhost" # Local Dev
+  config.hosts = "127.0.0.1" # Local Dev
+  
 end
