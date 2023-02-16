@@ -6,15 +6,6 @@ local:
   service: Disk
   root: <%= Rails.root.join("storage") %>
 
-
-# Remember not to checkin your GCS keyfile to a repository
-# google:
-#   service: GCS
-#   project: personal-project-projects
-#   #credentials: <%= Rails.root.join("config/master/online-store-gcs-key.json") %>
-#   credentials: <%= ENV['GOOGLE_JSON_KEY'] %>
-#   bucket: online-store-product-images
-
 cloudflare:
   service: S3
   endpoint: https://<%= Rails.application.credentials.dig(:cloudflare, :account_id) %>.r2.cloudflarestorage.com
