@@ -136,7 +136,9 @@ class CartsController < ApplicationController
         end
       end
     rescue => e
-      puts "Error: " + e
+      puts "Error VV"
+      puts e
+      puts "Error ^^"
       @cart_items = []
     end
     
